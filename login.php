@@ -1,3 +1,42 @@
+<?php
+
+     session_start();
+     $fail = false;
+     require_once "db.php" ;
+
+     if ( !empty($_POST)) {
+          extract($_POST) ;
+          if ( checkUser($email, $password, $user) ) {
+
+               if ( isset($remember)) {
+                    $token = sha1(uniqid() . "Private Key is Here" . time() ) ; // generate a random text
+                    setcookie("access_token", $token, time() + 60*60*24*365*10) ; // for 10 years
+                    setTokenByEmail($email, $token) ;
+               }
+               
+               // login as $user
+               $_SESSION["user"] = $user;
+
+               header("Location: index.php") ;
+               exit;
+          }
+          else { $fail = true  ; }
+     }
+
+     if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_COOKIE["access_token"])) {
+          $user = getUserByToken($_COOKIE["access_token"]) ;
+          if ( $user ) {
+               $_SESSION["user"] = $user ; // auto login
+               header("Location: index.php") ;
+               exit ; 
+          }
+     }
+ 
+  if ( $_SERVER["REQUEST_METHOD"] == "GET" && isAuthenticated()) {
+      header("Location: index.php") ; // auto login
+      exit ;
+  } 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +70,7 @@
                text-indent: 10px;
           }
           #a {
-               width: 20px
+               width: 20px;
           }
      </style>
 </head>
@@ -48,6 +87,11 @@
                     </div>
                     <div class="checkbox-label"><label for="remember" >Remember me</label></div>
                </div>
+               <?php
+                    if ($fail) {
+                         echo '<p style="color: red;">Failed to log in</p>';
+                    }
+               ?>
                <button type="submit" class="btn">LOG IN</button>
                <p id="p">New to BilGrocer? <a href="register.php">  Join now</a></p>
           </form>

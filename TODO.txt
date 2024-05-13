@@ -1,0 +1,4 @@
+1. Proper design for "Failed to log in"
+2. Make a "go back button for registration page.
+3. Get an email for sending confirmation codes.
+4. Clean the code and structure, make proper file system.
