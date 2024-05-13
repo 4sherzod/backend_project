@@ -37,7 +37,7 @@
                border-radius: 50px;
                border: 1px solid lightgray;
                background-color: #608F6B;
-               font-weight: bold;
+               /* font-weight: bold; */
                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                color:white;
           }
@@ -79,7 +79,6 @@
                <input type="button" value="LOG IN" id="loginbtn">
                <p id="p">New to BilGrocer? <a href="register.php">  Join now</a></p>
           </form>
-
      </div>
 </body>
 </html>
