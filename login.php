@@ -20,6 +20,19 @@
           }
           span{ color: #DC9D23;}
 
+          .checkbox-container {
+               display: flex;
+               /* margin-top: 20px; */
+               margin-left: 50px;
+               width: 150px;
+          }
+          .checkbox-label {
+               text-align: left;
+               text-indent: 10px;
+          }
+          #a {
+               width: 20px
+          }
      </style>
 </head>
 <body>
@@ -28,7 +41,13 @@
           <form method="post">
                <br>
                <input type="text" class="input" name="email" placeholder="E-MAIL" value="<?= $email ?? '' ?>"> 
-               <input type="text" class="input" name="password" placeholder="PASSWORD" value="<?= $password ?? '' ?>"> 
+               <input type="password" class="input" name="password" placeholder="PASSWORD" value="<?= $password ?? '' ?>"> 
+               <div class="checkbox-container">
+                    <div id="a">
+                         <input type="checkbox" id="remember" name="remember" style="margin-right: 5px;"> 
+                    </div>
+                    <div class="checkbox-label"><label for="remember" >Remember me</label></div>
+               </div>
                <input type="button" class="btn" value="LOG IN" id="loginbtn">
                <p id="p">New to BilGrocer? <a href="register.php">  Join now</a></p>
           </form>

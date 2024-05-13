@@ -49,7 +49,7 @@
             <input type="text" class="input" id="lname" placeholder="Last Name" value="<?= $lname ?? '' ?>">
             <input type="text" class="input" id="marketname" placeholder="Market Name"  style="display: none;" value="<?= $marketname ?? '' ?>">  
             <input type="text" class="input" id="email" placeholder="E-mail" value="<?= $email ?? '' ?>"> 
-            <input type="text" class="input" id="password" placeholder="Password" value="<?= $password ?? '' ?>">
+            <input type="password" class="input" id="password" placeholder="Password" value="<?= $password ?? '' ?>">
             <button type="submit" class="btn">Create Account</button>
             <a href="login.php">back</a>
          </form>
