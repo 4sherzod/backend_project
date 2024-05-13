@@ -48,7 +48,7 @@
                     </div>
                     <div class="checkbox-label"><label for="remember" >Remember me</label></div>
                </div>
-               <input type="button" class="btn" value="LOG IN" id="loginbtn">
+               <button type="submit" class="btn">LOG IN</button>
                <p id="p">New to BilGrocer? <a href="register.php">  Join now</a></p>
           </form>
      </div>

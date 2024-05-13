@@ -34,6 +34,9 @@
             background-color: #DC9D23;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
+        .box{
+          padding-bottom: 30px;
+        }
      </style>
      <script src="register.js"></script>
 </head>
@@ -51,7 +54,6 @@
             <input type="text" class="input" id="email" placeholder="E-mail" value="<?= $email ?? '' ?>"> 
             <input type="password" class="input" id="password" placeholder="Password" value="<?= $password ?? '' ?>">
             <button type="submit" class="btn">Create Account</button>
-            <a href="login.php">back</a>
          </form>
      </div>
 </body>
