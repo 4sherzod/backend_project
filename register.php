@@ -37,6 +37,12 @@
         .box{
           padding-bottom: 30px;
         }
+        #city{
+          display: flex;
+          gap: 40px;
+          margin: 0 50px;
+          width: 467px;
+        }
      </style>
      <script src="register.js"></script>
 </head>
@@ -48,11 +54,17 @@
                 <div id="consumer" class="chosen">Consumer</div>
                 <div id="market" class="normal">Market</div>
             </div>
-            <input type="text" class="input" id="fname" placeholder="First Name" value="<?= $fname ?? '' ?>"> 
-            <input type="text" class="input" id="lname" placeholder="Last Name" value="<?= $lname ?? '' ?>">
-            <input type="text" class="input" id="marketname" placeholder="Market Name"  style="display: none;" value="<?= $marketname ?? '' ?>">  
-            <input type="text" class="input" id="email" placeholder="E-mail" value="<?= $email ?? '' ?>"> 
-            <input type="password" class="input" id="password" placeholder="Password" value="<?= $password ?? '' ?>">
+            <input type="text" class="input" id="fname" placeholder="First Name" value="<?= isset($_POST['fname'])?$_POST['fname']:''?>"> 
+            <input type="text" class="input" id="lname" placeholder="Last Name" value="<?= isset($_POST['lname'])?$_POST['lname']:''?>">
+            <input type="text" class="input" id="marketname" placeholder="Market Name"  style="display: none;" value="<?= isset($_POST['marketname'])?$_POST['marketname']:''?>">  
+            <input type="text" class="input" id="email" placeholder="E-mail" value="<?= isset($_POST['email'])?$_POST['email']:''?>"> 
+            <input type="password" class="input" id="password" placeholder="Password" value="<?= isset($_POST['password'])?$_POST['password']:''?>">
+          
+            <div id="city">
+                 <input type="text" class="input2" name="city" id="" placeholder="City" value="<?= isset($_POST['city'])?$_POST['city']:''?>" >
+                 <input type="text" class="input2" name="disctrict" id="" placeholder="District" value="<?= isset($_POST['district'])?$_POST['district']:''?>">
+            </div>
+            <input type="text" class="input" name="" id="" placeholder="Address" value="<?= isset($_POST['address'])?$_POST['address']:''?>">
             <button type="submit" class="btn">Create Account</button>
          </form>
      </div>

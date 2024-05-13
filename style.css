@@ -5,9 +5,15 @@ body {
 *{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.input2{
+    height: 35px;
+    border-radius: 2px;
+    border: 1px solid darkgray;
+    text-indent: 10px;
+}
 .input{
     height: 35px;
-    margin: 40px 50px;
+    margin: 30px 50px;
     border-radius: 2px;
     border: 1px solid darkgray;
     text-indent: 10px;

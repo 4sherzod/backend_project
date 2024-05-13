@@ -40,8 +40,8 @@
      <div id="logindiv" class="box">
           <form method="post">
                <br>
-               <input type="text" class="input" name="email" placeholder="E-MAIL" value="<?= $email ?? '' ?>"> 
-               <input type="password" class="input" name="password" placeholder="PASSWORD" value="<?= $password ?? '' ?>"> 
+               <input type="text" class="input" name="email" placeholder="E-MAIL" value="<?= isset($_POST['email'])?$_POST['email']:''?>"> 
+               <input type="password" class="input" name="password" placeholder="PASSWORD" value="<?= isset($_POST['password'])?$_POST['password']:''?>"> 
                <div class="checkbox-container">
                     <div id="a">
                          <input type="checkbox" id="remember" name="remember" style="margin-right: 5px;"> 
