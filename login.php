@@ -1,5 +1,4 @@
 <?php
-
      session_start();
      $fail = false;
      require_once "db.php" ;
@@ -45,20 +44,7 @@
      <title>Document</title>
      <link rel="stylesheet" href="style.css">
      <style>
-          #p {
-               margin: 20px 190px;
-               text-align: center;
-               white-space: nowrap; 
-               text-align: center;
-               width: 20px;
-               height: 40px;
-          }
-
-        #p a {
-               display: inline-block;
-          }
           span{ color: #DC9D23;}
-
           .checkbox-container {
                display: flex;
                /* margin-top: 20px; */
@@ -69,8 +55,8 @@
                text-align: left;
                text-indent: 10px;
           }
-          #a {
-               width: 20px;
+          #p{
+               margin: 20px 190px;
           }
      </style>
 </head>

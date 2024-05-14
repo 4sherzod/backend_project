@@ -1,7 +1,7 @@
 <?php
-const DSN = "mysql:host=localhost;dbname=usersdb;charset=utf8mb4" ;
-const USER = "Sherzod" ;
-const PASSWORD = "123" ;
+const DSN = "mysql:host=localhost;dbname=test;charset=utf8mb4" ;
+const USER = "root" ;
+const PASSWORD = "" ;
 
 try {
      $db = new PDO(DSN, USER, PASSWORD) ; 

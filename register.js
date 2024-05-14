@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Attach a click event listener to the <div> element
     consumer.addEventListener('click', function() {
         consumer.className = 'chosen';
-        market.className = 'normal';
+        market.className = 'normal'; 
 
         fname.style.display = 'block';
         lname.style.display = 'block';

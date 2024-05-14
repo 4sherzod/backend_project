@@ -1,6 +1,6 @@
 body {
     background-color:#FFFDF6;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
 }
 *{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -21,7 +21,7 @@ body {
 
 .btn {
     border-radius: 50px;
-    border: 1px solid lightgray;
+    border: 1px solid #608F6B;
     background-color: #608F6B;
     /* font-weight: bold; */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -53,4 +53,20 @@ body {
     margin-top: 120px;
     text-align: center;
     color: #40674A;
+}
+
+#p {
+    text-align: center;
+    white-space: nowrap; 
+    text-align: center;
+    width: 20px;
+    height: 40px;
+}
+
+#p a {
+    display: inline-block;
+}
+
+#a {
+    width: 20px;
 }

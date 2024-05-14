@@ -1,4 +1,10 @@
-1. Proper design for "Failed to log in"
-2. Make a "go back button for registration page.
-3. Get an email for sending confirmation codes.
+1. Proper design for "Failed to log in" --saida
+2. Make a "go back button for registration page. --saida
+3. Get an email for sending confirmation codes.--sherzod
 4. Clean the code and structure, make proper file system.
+5. Market page.
+6. Main page (index.php).
+7. Customer page.
+8. Shopping cart page.
+9. Add SQL files into SQL folder.
+10. Resend mail timer. -- Sherzod
