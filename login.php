@@ -15,8 +15,8 @@
                
                // login as $user
                $_SESSION["user"] = $user;
-
-               header("Location: index.php") ;
+               if (!$user["type_of_user"]) header("Location: index.php") ;
+               else header("Location: seller.php") ;
                exit;
           }
           else { $fail = true  ; }
@@ -26,15 +26,19 @@
           $user = getUserByToken($_COOKIE["access_token"]) ;
           if ( $user ) {
                $_SESSION["user"] = $user ; // auto login
-               header("Location: index.php") ;
+               if (!$user["type_of_user"]) header("Location: index.php") ;
+               else header("Location: seller.php") ;
                exit ; 
           }
      }
  
-  if ( $_SERVER["REQUEST_METHOD"] == "GET" && isAuthenticated()) {
-      header("Location: index.php") ; // auto login
-      exit ;
-  } 
+     if ( $_SERVER["REQUEST_METHOD"] == "GET" && isAuthenticated()) {
+          if($_SESSION["user"]) {
+               if (!$_SESSION["user"]["type_of_user"]) header("Location: index.php") ;
+               else header("Location: seller.php") ;
+               exit ;
+          }
+     }
 ?>
 <!DOCTYPE html>
 <html lang="en">

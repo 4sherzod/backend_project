@@ -1,5 +1,5 @@
 <?php
-const DSN = "mysql:host=localhost;dbname=test;charset=utf8mb4" ;
+const DSN = "mysql:host=localhost;dbname=usersdb;charset=utf8mb4" ;
 const USER = "root" ;
 const PASSWORD = "" ;
 
@@ -47,3 +47,18 @@ function getUserByToken($token) {
  function isAuthenticated() {
      return isset($_SESSION["user"]) ;
  }
+
+ function getProducts (){
+     global $db;
+     
+     $stmt = $db->prepare("select * from products");
+     $stmt->execute();
+     return $stmt;
+ }
+
+function getUserById($id) {
+     global $db;
+     $stmt = $db->prepare("select * from users where user_id = ?");
+     $stmt->execute([$id]) ;
+     return $stmt->fetch() ;
+}
