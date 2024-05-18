@@ -5,7 +5,9 @@
      if(isset($_SESSION["user"])){
           // var_dump($_SESSION["user"]);
           $logged = true;
+          $user = $_SESSION["user"];
      }
+     
      // else echo "asd";
 ?>
 
@@ -105,13 +107,24 @@
      <hr>
      <div class="grid-container">
      <?php
-          $products = getProducts();
+          $products = getProducts($user["user_city"]);
           foreach($products as $i) {
-               echo '<div class="item"><a href="productdetail.php?id=', $i['product_id'], '">';
-               echo '<img src="',$i['image_url'],'" alt="',$i['title'],'">
-               <p><span>',$i['discounted_price'],' TL</span></p>
-               <p>',$i['title'],'</p>';
-               echo '</a></div>';
+               if($i["user_district"] == $user["user_city"]){
+                    echo '<div class="item"><a href="productdetail.php?id=', $i['product_id'], '">';
+                    echo '<img src="',$i['image_url'],'" alt="',$i['title'],'">
+                    <p><span>',$i['discounted_price'],' TL</span></p>
+                    <p>',$i['title'],'</p>';
+                    echo '</a></div>';
+               }
+          }
+          foreach($products as $i) {
+               if($i["user_district"] != $user["user_city"]){
+                    echo '<div class="item"><a href="productdetail.php?id=', $i['product_id'], '">';
+                    echo '<img src="',$i['image_url'],'" alt="',$i['title'],'">
+                    <p><span>',$i['discounted_price'],' TL</span></p>
+                    <p>',$i['title'],'</p>';
+                    echo '</a></div>';
+               }
           }
      ?>
      </div>

@@ -48,12 +48,14 @@ function getUserByToken($token) {
      return isset($_SESSION["user"]) ;
  }
 
- function getProducts (){
+ function getProducts ($city){
      global $db;
-     
-     $stmt = $db->prepare("select * from products");
-     $stmt->execute();
-     return $stmt;
+     $stmt = $db->prepare("select p.*, u.user_district
+                         from products p
+                         join users u on p.user_id = u.user_id
+                         where u.user_city = ?");
+     $stmt->execute([$city]);
+     return $stmt->fetchAll();
  }
 
 function getUserById($id) {

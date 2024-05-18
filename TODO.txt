@@ -1,7 +1,6 @@
 1. Proper design for "Failed to log in" --saida
 4. Clean the code and structure, make proper file system. --sherzod // nar 
 10. Resend mail timer. -- sherzod // nar
-11. fix logging out for the markets -- sherzod
 12. Edit page --saida
 13. delete products -- irem
 14. When the market user logs in, it marks all expired products in the list. -- irem
@@ -13,7 +12,6 @@
 20. Applications must be protected against sql injection, XSS, and CSRF attacks -- irem 
 21. Make proper design -- everyone <------------------------------------------------------------------------- IMPORTANT
 22. Make proper names for files plz -- saida/leyli // nar
-23. Make seller not open if not seller -- sherzod 
 24. Exceed stock amount -- leyli
 26. Make so the registration button shows an error message if something is not filled -- saida 
 27. Add img for the product properly
