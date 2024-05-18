@@ -39,6 +39,32 @@
                exit ;
           }
      }
+     if (!empty($_POST)) {
+         extract($_POST);
+         $user = checkUser($email, $password, $user);
+         if ($user) {
+             if (isset($remember)) {
+                 $token = sha1(uniqid() . "Private Key is Here" . time());
+                 setcookie("access_token", $token, time() + 60*60*24*365*10);
+                 setTokenByEmail($email, $token);
+             }
+     
+             // login as $user
+             $_SESSION["user"] = $user;
+             
+             // Check if the user is a market user (adjust the condition as necessary)
+             if ($user["type_of_user"] == 'market') {
+                 markExpiredProducts(); // Call the function to mark expired products
+                 header("Location: seller.php");
+             } else {
+                 header("Location: index.php");
+             }
+             exit;
+         } else {
+             $fail = true;
+         }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
