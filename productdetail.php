@@ -1,54 +1,56 @@
 <?php
+session_start();
 
 require_once("db.php");
-session_start();
-if (!isset($_SESSION["user"]) || $_SESSION["user"]["type_of_user"] == 1) {
-    header("location: login.php");
+
+if (!isset($_SESSION["user"])) {
+    header("Location: login.php");
     exit;
 }
+
 $user_id = $_SESSION["user"];
-if(isset($_GET["id"])){
+
+if (isset($_GET["id"])) {
     $id = $_GET["id"];
 }
+
 $stmt = $db->prepare("SELECT * FROM products WHERE product_id = ?");
 $stmt->execute([$id]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Fetch cart details
-$stmt1 = $db->prepare("SELECT * FROM cart WHERE product_id = ? AND user_id = ?");
-$stmt1->execute([$id, $user_id["user_id"]]);
-$cart = $stmt1->fetch(PDO::FETCH_ASSOC);
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
 
-$product_id = $product['product_id'];
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['quantity'])) {
+    $quantity = $_GET['quantity'];
+    $cart_item = ['product_id' => $id, 'quantity' => $quantity];
+    
+   
+    $existing_key = array_search($id, array_column($_SESSION['cart'], 'product_id'));
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['quantity']) && isset($_GET['type'])) {
-        $quantity = $_GET['quantity'];
-        $type = $_GET['type'];
-
-        if ($type == 'minus') {
-            $quantity = max(0, $quantity - 1); 
-        } else {
-            $quantity = $quantity + 1;
-        }
-
-        if ($cart) {
-            // Update existing cart entry
-            $stmt2 = $db->prepare('UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?');
-            $stmt2->execute([$quantity, $user_id["user_id"], $product_id]);
-        } else {
-            // Insert new cart entry
-            $stmt2 = $db->prepare('INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)');
-            $stmt2->execute([$user_id["user_id"], $product_id, 1]);
-            $quantity = 1; // Set quantity to 1 for new entry
-        }
-
-        // Re-fetch cart details
-        $stmt1->execute([$id, $user_id["user_id"]]);
-        $cart = $stmt1->fetch(PDO::FETCH_ASSOC);
+    if ($existing_key !== false) {
+      
+        $_SESSION['cart'][$existing_key]['quantity'] = $quantity;
     } else {
-        $quantity = $cart ? $cart['quantity'] : 0;
+        
+        $_SESSION['cart'][] = $cart_item;
     }
+}
+
+
+$quantity = 0;
+foreach ($_SESSION['cart'] as $item) {
+    if ($item['product_id'] == $id) {
+        $quantity = $item['quantity'];
+        break;
+    }
+
+$stmt = $db->prepare("SELECT stock from products where product_id= ?");
+$stmt->execute([$id]);
+$stock = $stmt->fetch(PDO::FETCH_ASSOC)['stock'];
+
+
 }
 ?>
 <!DOCTYPE html>
@@ -57,10 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Detail</title>
-    <link rel="stylesheet" href="styles.css">
+    
 </head>
 <style>
-/* CSS styles */
 body {
     background-color: #FFFDF6;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -127,7 +128,7 @@ main {
     color: #666;
 }
 
-button {
+.button {
     background-color: #DC9D23;
     color: #fff;
     border: none;
@@ -158,6 +159,29 @@ span {
 #cross {
     text-decoration: line-through;
 }
+a {
+    text-decoration: none;
+    color: white;
+}
+#control {
+    display: flex;
+    justify-content: center;
+}
+#control div {
+   
+    border-radius:10px;
+}
+#quantity {
+    font-size: 1.5em;
+    width: 50px;
+    text-align: center;
+}
+#updateCart{
+margin-top:22px;
+border-radius: 20px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
 </style>
 <body>
 
@@ -174,17 +198,52 @@ span {
     <div class="product-details">
         <img src="<?=$product['image_url']?>" alt="Product Image">
         <h2><?=$product['title']?></h2>
-        <p class="normal_price" id="cross">$<?=$product['normal_price']?></p>
-        <p class="price">$<?=$product['discounted_price']?></p>
-        <div>
-            <button id="decreaseQuantity"><a href="productdetail.php?quantity=<?=$quantity?>&type=minus&id=<?=$id?>">-</a></button>
+        <p class="normal_price" id="cross"><?=$product['normal_price']?> TL</p>
+        <p class="price"><?=$product['discounted_price']?> TL</p>
+        <div id="control">
+            <div id="decreaseQuantity" class="button">-</div>
             <span id="quantity"><?=$quantity?></span>
-            <button id="increaseQuantity"><a href="productdetail.php?quantity=<?=$quantity?>&type=plus&id=<?=$id?>">+</a></button>
+            <div id="increaseQuantity" class="button">+</div>
         </div>
+        <button id="updateCart" class="button">Update Cart</button>
     </div>
 </main>
 <footer>
     <p>&copy; 2024 Online Store. All rights reserved.</p>
 </footer>
+
+<script type = "text/javascript">
+  
+document.getElementById('decreaseQuantity').addEventListener('click', function() {
+   console.log("yes");
+    var quantityElement = document.getElementById('quantity');
+    var quantity = parseInt(quantityElement.textContent);
+    if (quantity > 0) {
+        quantityElement.textContent = quantity - 1;
+    }
+});
+
+document.getElementById('increaseQuantity').addEventListener('click', function() {
+    console.log("yes");
+    var quantityElement = document.getElementById('quantity');
+    var quantity = parseInt(quantityElement.textContent);
+    console.log(quantity);
+    <?php if(isset($stock)) : ?>
+        var stock = <?php echo json_encode($stock); ?>;
+        if (quantity < stock) {
+            quantityElement.textContent = quantity + 1;
+        }
+    <?php endif; ?>
+});
+
+
+
+document.getElementById('updateCart').addEventListener('click', function() {
+    var quantity = document.getElementById('quantity').textContent;
+    var urlParams = new URLSearchParams(window.location.search);
+    var id = urlParams.get('id');
+    window.location.href = 'productdetail.php?quantity=' + quantity + '&id=' + id;
+});
+</script>
 </body>
 </html>
