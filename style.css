@@ -136,7 +136,6 @@ body {
     width: 20px;
 }
 
-/* New styles for action links */
 .action-links a {
     margin-right: 10px;
     padding: 5px 10px;
@@ -148,4 +147,5 @@ body {
 .action-links a:hover {
     background-color: #40674A;
 }
+
 
