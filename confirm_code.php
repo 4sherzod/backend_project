@@ -1,8 +1,11 @@
 <?php 
+     require_once "db.php";
      require_once "mail.php";
      session_start();
-     $email = $_SESSION['email'];
+
+     $new_user = $_SESSION['new_user'];
      
+     var_dump($new_user);
      if ( isset($_GET["resend"]) ) {
           $resend = $_GET["resend"];
           if($resend == '1') {
@@ -12,15 +15,17 @@
      }
 
      $receivedCode = isset($_SESSION['code']) ? $_SESSION['code'] : '';
-     echo "code is: ", $receivedCode;
+     echo "<br>code is: ", $receivedCode;
 
      if ( !empty($_POST)) {
         extract($_POST) ;
         //var_dump($_POST);
         if ($code == $receivedCode) {
-          //add to the database
-            header("Location: login.php") ;
-            exit;
+               addUser($new_user);
+               
+               unset($_SESSION["new_user"]);
+               header("Location: login.php") ;
+               exit;
         }
         else {
           ?>
@@ -53,7 +58,7 @@
                </div>
                <h4>Verify its you</h4><hr>
                <div>
-                    <p class="text">A verification code was sent to <b><?php echo $email,'&nbsp'; ?></b></p>
+                    <p class="text">A verification code was sent to<b><?php echo $new_user['email'],'&nbsp'; ?></b></p>
                     <p>Please check your inbox and enter the code below</p>
                     <p>6 digit code</p>
                </div>

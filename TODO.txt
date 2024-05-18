@@ -1,5 +1,4 @@
 1. Proper design for "Failed to log in" --saida
-3. Get an email for sending confirmation codes. --sherzod
 4. Clean the code and structure, make proper file system. --sherzod // nar 
 10. Resend mail timer. -- sherzod // nar
 11. fix logging out for the markets -- sherzod
@@ -15,3 +14,6 @@
 21. Make proper design -- everyone <------------------------------------------------------------------------- IMPORTANT
 22. Make proper names for files plz -- saida/leyli // nar
 23. Make seller not open if not seller -- sherzod 
+24. Exceed stock amount -- leyli
+26. Make so the registration button shows an error message if something is not filled -- saida 
+27. Add img for the product properly

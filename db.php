@@ -1,10 +1,10 @@
 <?php
 const DSN = "mysql:host=localhost;dbname=usersdb;charset=utf8mb4" ;
 const USER = "root" ;
-const PASSWORD = "" ;
+const DBPASSWORD = "" ;
 
 try {
-     $db = new PDO(DSN, USER, PASSWORD) ; 
+     $db = new PDO(DSN, USER, DBPASSWORD) ; 
      // $stmt = $db->prepare("select * from users");
      // $stmt->execute();
      // $users = $stmt->fetchAll();
@@ -62,3 +62,51 @@ function getUserById($id) {
      $stmt->execute([$id]) ;
      return $stmt->fetch() ;
 }
+
+function addUser($user) {
+     global $db;
+     $stmt = $db->prepare("
+     INSERT INTO users (
+          first_name, last_name, market_name, user_email, user_password, user_city, user_district, user_address, type_of_user
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+     ");
+     $stmt->execute([
+          $user['fname'],
+          $user['lname'],
+          $user['marketname'],
+          $user['email'],
+          $user['password'],
+          $user['city'],
+          $user['district'],
+          $user['address'],
+          $user['type_of_user'],    // Assuming '0' for 'type_of_user'
+      ]);
+}
+
+function addProduct($product) {
+     global $db;
+     $stmt = $db->prepare("
+     INSERT INTO products (
+          title, stock, normal_price, discounted_price, expiration_date, image_url, category, user_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+     ");
+     $stmt->execute([
+          $product['title'],
+          $product['stock'],
+          $product['normal_price'],
+          $product['discounted_price'],
+          $product['expiration_date'],
+          $product['image_url'],
+          $product['category'],
+          $product['user_id'],
+      ]);
+}
+
+function getProductbyId ($product_id){
+     global $db;
+
+     $stmt = $db->prepare("SELECT * FROM products WHERE product_id = ?");
+     $stmt->execute([$product_id]);
+     return $stmt->fetch();
+     
+ }

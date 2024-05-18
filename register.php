@@ -1,13 +1,32 @@
+<script>
+    var type_of_user = 0;
+</script>
 <?php
     session_start();
     require_once "mail.php";
-     if ( !empty($_POST)) {
+    
+    $type_of_user = 0;
+    if(isset($_GET["op"]))$type_of_user = $_GET["op"];
+
+    if ( !empty($_POST)) {
         extract($_POST) ;
         //var_dump($_POST);
-        if (isset($fname) && $fname == "TEST") {
-            // $code = rand(100000, 999999);
+        if($fname) echo "123";
+        else echo "456";
+        if ((isset($fname) && $fname == "TEST") || (isset($marketname) && $marketname == "TEST")) {
+            $new_user = [
+                        'fname' => $fname,
+                        'lname' => $lname,
+                        'marketname' => $marketname,
+                        'email' => $email,
+                        'password' => $password,
+                        'city' => $city,
+                        'district' => $district,
+                        'address' => $address,
+                        'type_of_user' => $type_of_user
+                        ];
             $_SESSION['code'] = rand(100000, 999999);
-            $_SESSION['email'] = $email;
+            $_SESSION['new_user'] = $new_user;
             Mail::send($email, "TEST", "IDK SMTH");
             header("Location: confirm_code.php") ;
             exit;
@@ -25,7 +44,6 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Document</title>
      <link rel="stylesheet" href="style.css">
-     <script src="register.js"></script>
      <style>
         #opt{
             display: flex;
@@ -64,31 +82,34 @@
         #p{
             margin: 20px 160px;
         }
+        #opt a {
+            text-decoration: none;
+        }
      </style>
      
-</head>
+     </head>
 <body>
     <h1 class="title">Create an Account</h1>
     <div id="registerdiv" class="box">
         <form method="post">
             <div id="opt">
-                <div id="consumer" class="chosen">Consumer</div>
-                <div id="market" class="normal">Market</div>
+                <a href="register.php?op=0" id="consumer" class="<?php echo $type_of_user == 0 ? 'chosen' : 'normal'; ?>">Consumer</a>
+                <a href="register.php?op=1" id="market" class="<?php echo $type_of_user == 1 ? 'chosen' : 'normal'; ?>">Market</a>
             </div>
-            <input type="text" class="input" name="fname" id="fname" placeholder="First Name" value="<?= isset($_POST['fname'])?$_POST['fname']:''?>"> 
-            <input type="text" class="input" name="lname" id="lname" placeholder="Last Name" value="<?= isset($_POST['lname'])?$_POST['lname']:''?>">
-            <input type="text" class="input" name="marketname" id="marketname" placeholder="Market Name"  style="display: none;" value="<?= isset($_POST['marketname'])?$_POST['marketname']:''?>">  
-            <input type="text" class="input" name="email" id="email" placeholder="E-mail" value="<?= isset($_POST['email'])?$_POST['email']:''?>"> 
-            <input type="password" class="input" name="password" id="password" placeholder="Password" value="<?= isset($_POST['password'])?$_POST['password']:''?>">
+            <input type="text" class="input" name="fname" id="fname" placeholder="First Name" style="display: <?= $type_of_user == 0 ? 'block' : 'none'; ?>" value="<?= isset($_POST['fname']) ? $_POST['fname'] : ''; ?>">
+            <input type="text" class="input" name="lname" id="lname" placeholder="Last Name" style="display: <?= $type_of_user == 0 ? 'block' : 'none'; ?>" value="<?= isset($_POST['lname']) ? $_POST['lname'] : ''; ?>">
+            <input type="text" class="input" name="marketname" id="marketname" placeholder="Market Name" style="display: <?= $type_of_user == 0 ? 'none' : 'block'; ?>" value="<?= isset($_POST['marketname']) ? $_POST['marketname'] : ''; ?>">
+            <input type="text" class="input" name="email" id="email" placeholder="E-mail" value="<?= isset($_POST['email']) ? $_POST['email'] : ''; ?>">
+            <input type="password" class="input" name="password" id="password" placeholder="Password" value="<?= isset($_POST['password']) ? $_POST['password'] : ''; ?>">
           
             <div id="city">
-                 <input type="text" class="input2" name="city" id="" placeholder="City" value="<?= isset($_POST['city'])?$_POST['city']:''?>" >
-                 <input type="text" class="input2" name="district" id="" placeholder="District" value="<?= isset($_POST['district'])?$_POST['district']:''?>">
+                <input type="text" class="input2" name="city" id="" placeholder="City" value="<?= isset($_POST['city']) ? $_POST['city'] : ''; ?>">
+                <input type="text" class="input2" name="district" id="" placeholder="District" value="<?= isset($_POST['district']) ? $_POST['district'] : ''; ?>">
             </div>
-            <input type="text" class="input" name="address" id="address" placeholder="Address" value="<?= isset($_POST['address'])?$_POST['address']:''?>">
+            <input type="text" class="input" name="address" id="address" placeholder="Address" value="<?= isset($_POST['address']) ? $_POST['address'] : ''; ?>">
             <button type="submit" class="btn">Create Account</button>
             <p id="p">Already have an account? <a href="login.php"> Sign in</a></p>
-         </form>
+        </form>
      </div>
 </body>
 </html>

@@ -54,7 +54,7 @@ $list = $stmt->fetchAll();
             echo "<td>" . $row['category'] . "</td>";
             echo "<td>" . getUserById($row['user_id'])["market_name"] . "</td>";
             echo "<td>";
-            echo "<a href='product_detail.php?id=" . $row['product_id'] . "' >View</a>";
+            echo "<a href='view_product.php?id=" . $row['product_id'] . "' >View</a>";
             echo "<a href='edit_product.php?id=" . $row['product_id'] . "' >Edit</a>";
             echo "</td>";
             echo "</tr>";
