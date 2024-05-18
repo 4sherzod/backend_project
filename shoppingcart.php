@@ -1,24 +1,19 @@
 <?php
+require_once("db.php");
 
-require_once("db.php"); 
 session_start();
-if (!isset($_SESSION["user"]) || $_SESSION["user"]["type_of_user"] == 1) {
-    header("location: login.php");
+if (!isset($_SESSION["user"])) {
+    header("Location: login.php");
     exit;
 }
 $user_id = $_SESSION["user"]["user_id"];
-$stmt1 = $db->prepare("
-    SELECT product_id, quantity
-    FROM cart
-    WHERE user_id = ?
-");
+
+$stmt1 = $db->prepare("SELECT product_id, quantity FROM cart WHERE user_id = ?");
 $stmt1->execute([$user_id]);
 $cartItems = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
-
 $detailedCartItems = [];
-
-foreach ($cartItems as $cartItem) {
+foreach ($_SESSION["cart"] as $cartItem) {
     $stmt2 = $db->prepare("SELECT title, image_url, discounted_price FROM products WHERE product_id = ?");
     $stmt2->execute([$cartItem['product_id']]);
     $product = $stmt2->fetch(PDO::FETCH_ASSOC);
@@ -27,38 +22,35 @@ foreach ($cartItems as $cartItem) {
     }
 }
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['update'])) {
-        foreach ($_POST['quantities'] as $product_id => $quantity) {
-            if ($quantity > 0) {
-                $stmt3 = $db->prepare("UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?");
-                $stmt3->execute([$quantity, $user_id, $product_id]);
-            } else {
-                $stmt4 = $db->prepare("DELETE FROM cart WHERE user_id = ? AND product_id = ?");
-                $stmt4->execute([$user_id, $product_id]);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['quantities'])) {
+    foreach ($_POST['quantities'] as $product_id => $quantity) {
+        if ($quantity > 0) {
+            foreach ($_SESSION["cart"] as $key => $cartItem) {
+                if ($cartItem["product_id"] == $product_id) {
+                    $_SESSION["cart"][$key]["quantity"] = $quantity;
+                }
             }
         }
-    } 
-    else if(isset($_POST['buy'])) {
-        $stmt = $db->prepare('delete from cart where user_id = ?');
-        $stmt->execute([$user_id]);
-   }
-    
+    }
+
     header("Location: shoppingcart.php");
     exit;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])){
-        $id = $_GET['id'];
-        $stmt5 = $db->prepare("DELETE FROM cart WHERE user_id = ? AND product_id = ?");
-        $stmt5->execute([$user_id, $id]);
-    
-        header("Location: shoppingcart.php");
-        exit;
-}
-$totalPrice = 0;
+    $id = $_GET['id'];
+    foreach($_SESSION["cart"] as $key => $cartItem){
+        if($cartItem["product_id"] == $id){
+            unset($_SESSION["cart"][$key]);
 
+        }
+    }
+
+    header("Location: shoppingcart.php");
+    exit;
+}
+
+$totalPrice = 0;
 foreach ($detailedCartItems as $item) {
     $totalPrice += $item['discounted_price'] * $item['quantity'];
 }
@@ -205,30 +197,42 @@ a{
 <main>
     <div class="cart">
         <h2>Shopping Cart</h2>
-        <form method="post">
+        <form id="cartForm" method="post">
             <?php foreach ($detailedCartItems as $item): ?>
+
                 <div class="cart-item">
                     <img src="<?=$item['image_url']?>" alt="<?=$item['title']?>">
                     <div class="cart-item-details">
                         <h4><?=$item['title']?></h4>
-                        <p>$<?=$item['discounted_price']?></p>
+                        <p><?=$item['discounted_price']?> TL</p>
                     </div>
                     <div class="cart-item-actions">
-                        <input type="number" name="quantities[<?=$item['product_id']?>]" value="<?=$item['quantity']?>" min="0">
+                        <input class="quantityInput" type="number" name="quantities[<?=$item['product_id']?>]" value="<?=$item['quantity']?>" min="0">
                         <button name="remove"><a href="shoppingcart.php?id=<?=$item['product_id']?>">Remove</a></button>
                         <input type="hidden" name="product_id" value="<?=$item['product_id']?>">
                     </div>
                 </div>
             <?php endforeach; ?>
-            <button type="submit" name="update" style="margin-top: 20px;">Update Cart</button>
             <div class="total">
-                Total: $<?=$totalPrice?>
+                Total: <?=$totalPrice?> TL
             </div>
-            <button type="submit" name="buy" style="margin-top: 20px; margin:auto;">BUY</button>
         </form>
-       
     </div>
 </main>
 
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    var quantityInputs = document.querySelectorAll('.quantityInput');
+    quantityInputs.forEach(function(input) {
+        input.addEventListener('change', function() {
+            document.getElementById('cartForm').submit();
+        });
+    });
+});
+</script>
+
 </body>
 </html>
+
+
