@@ -10,6 +10,11 @@ if (!isset($_SESSION["user"])) {
 $stmt = $db->prepare('select * from products where user_id = ?');
 $stmt->execute([$_SESSION["user"]["user_id"]]);
 $list = $stmt->fetchAll();
+
+$stmt = $pdo->prepare("SELECT * FROM products WHERE user_id = ?");
+$stmt->execute([$_SESSION["user"]["user_id"]]);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +61,7 @@ $list = $stmt->fetchAll();
             echo "<td>";
             echo "<a href='view_product.php?id=" . $row['product_id'] . "' >View</a>";
             echo "<a href='edit_product.php?id=" . $row['product_id'] . "' >Edit</a>";
+            echo "<a href='delete_product.php?id=" . $row['product_id'] . "' onclick=\"return confirm('Are you sure you want to delete this product?');\">Delete</a>";
             echo "</td>";
             echo "</tr>";
         }
