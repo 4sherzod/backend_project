@@ -13,6 +13,13 @@ try {
      exit ;
 }
 
+function markExpiredProducts() {
+    global $db;
+
+    $sql = "UPDATE products SET status = 'expired' WHERE expiration_date < NOW()";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+}
 
 function checkUser($email, $pass, &$user) {
      global $db;
