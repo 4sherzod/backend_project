@@ -8,4 +8,4 @@ if(isset($_SESSION["user"])) {
      setTokenByEmail($_SESSION["user"]["user_email"], "NULL");
      session_destroy();
 }
-header("Location: index.php?i=1") ; // auto login
+header("Location: index.php") ;

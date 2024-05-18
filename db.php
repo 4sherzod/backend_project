@@ -33,12 +33,12 @@ function password_verify1($s1, $s2) {
 
 function setTokenByEmail($email, $token) {
      global $db;
-     $stmt = $db->prepare("update users set token = ? where user_email = ?") ;
+     $stmt = $db->prepare("update users set user_session_token = ? where user_email = ?") ;
      $stmt->execute([$token, $email]) ;
 }
 function getUserByToken($token) {
      global $db;
-     $stmt = $db->prepare("select * from users where token = ?");
+     $stmt = $db->prepare("select * from users where user_session_token = ?");
      $stmt->execute([$token]) ;
      return $stmt->fetch() ;
   }

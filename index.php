@@ -3,8 +3,10 @@
      require_once "db.php";
      $logged = false;
      if(isset($_SESSION["user"])){
+          // var_dump($_SESSION["user"]);
           $logged = true;
      }
+     // else echo "asd";
 ?>
 
 <!DOCTYPE html>
@@ -92,16 +94,8 @@
 <body>
      <header>
           <?php
-               if($logged) {
-          ?>
-               <p>Welcome <?=$_SESSION["user"]["first_name"]?> <br> <a href="logout.php">(Log out)</a></p>
-          <?php
-               }
-               else {
-          ?>
-               <p>Welcome <br> <a href="login.php">(Log in)</a></p>
-          <?php
-               }
+               if($logged) echo '<p>Welcome ', $_SESSION["user"]["first_name"], '<br><a href="logout.php">(Log out)</a></p>';
+               else echo '<p>Welcome <br> <a href="login.php">(Log in)</a></p>';
           ?>
           <input type="text" id="searchInput" placeholder="Search..." onfocus="clearPlaceholder(this)" onblur="restorePlaceholder(this)">
           <div id="menu">

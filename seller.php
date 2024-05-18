@@ -64,5 +64,7 @@ $list = $stmt->fetchAll();
         echo "No products found.";
     } ?>
     </table>
+    <a href="logout.php">logout</a>
+    <a href="index.php">go to index.php</a>
 </body>
 </html>

@@ -2,8 +2,8 @@
 
 require_once("db.php"); 
 session_start();
-if (!isset($_SESSION["user"])) {
-    header("login.php");
+if (!isset($_SESSION["user"]) || $_SESSION["user"]["type_of_user"] == 1) {
+    header("location: login.php");
     exit;
 }
 $user_id = $_SESSION["user"]["user_id"];
