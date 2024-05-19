@@ -67,8 +67,9 @@ function getUserByToken($token) {
      else {
           $stmt = $db->prepare("select p.*, u.user_district
           from products p
-          join users u on p.user_id = u.user_id");
-          $stmt->execute();
+          join users u on p.user_id = u.user_id
+          where p.title like ?");
+          $stmt->execute(["%$search%"]);
      }
      return $stmt->fetchAll();
  }
