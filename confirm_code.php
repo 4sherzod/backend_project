@@ -17,6 +17,7 @@
      $receivedCode = isset($_SESSION['code']) ? $_SESSION['code'] : '';
      echo "<br>code is: ", $receivedCode;
 
+
      if ( !empty($_POST)) {
         extract($_POST) ;
         //var_dump($_POST);
