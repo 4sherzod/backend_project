@@ -55,13 +55,21 @@ function getUserByToken($token) {
      return isset($_SESSION["user"]) ;
  }
 
- function getProducts ($city){
+ function getProducts ($city, $search){
      global $db;
-     $stmt = $db->prepare("select p.*, u.user_district
+     if(isset($city)){
+          $stmt = $db->prepare("select p.*, u.user_district
                          from products p
                          join users u on p.user_id = u.user_id
-                         where u.user_city = ?");
-     $stmt->execute([$city]);
+                         where u.user_city = ? AND p.title like ?");
+                         $stmt->execute([$city, "%$search%"]);
+     }
+     else {
+          $stmt = $db->prepare("select p.*, u.user_district
+          from products p
+          join users u on p.user_id = u.user_id");
+          $stmt->execute();
+     }
      return $stmt->fetchAll();
  }
 

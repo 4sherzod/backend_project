@@ -11,7 +11,7 @@ CREATE TABLE products (
 );
 
 INSERT INTO products (
-    title, stock, normal_price, discounted_price, expiration_date, image_url, category, seller_id
+    title, stock, normal_price, discounted_price, expiration_date, image_url, category, user_id
 ) VALUES
 ('Toblerone 100gr', 25, 20.00, 12.00, '2024-06-30', 'images/toblerone.jpg', 'Snacks', 5),
 ('Coca-Cola 1L', 100, 3.00, 2.00, '2024-07-15', 'images/cocacola.jpg', 'Beverages', 6),

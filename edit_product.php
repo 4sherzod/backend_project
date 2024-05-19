@@ -2,7 +2,6 @@
 require_once "db.php";
 
 session_start();
-
 $product_id = $_GET['id'];
 
 $product = getProductbyId($product_id);
