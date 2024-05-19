@@ -98,6 +98,7 @@
           <?php
                if($logged) echo '<p>Welcome ', $_SESSION["user"]["first_name"], '<br><a href="logout.php">(Log out)</a></p>';
                else echo '<p>Welcome <br> <a href="login.php">(Log in)</a></p>';
+               echo "<div><a href='edit_profile.php'>Edit Profile</a></div>";
           ?>
           <input type="text" id="searchInput" placeholder="Search..." onfocus="clearPlaceholder(this)" onblur="restorePlaceholder(this)">
           <div id="menu">

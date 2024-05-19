@@ -1,5 +1,5 @@
 <?php
-const DSN = "mysql:host=localhost;dbname=usersdb;charset=utf8mb4" ;
+const DSN = "mysql:host=localhost;dbname=UsersDB;charset=utf8mb4" ;
 const USER = "root" ;
 const DBPASSWORD = "" ;
 
