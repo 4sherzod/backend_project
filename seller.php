@@ -6,7 +6,9 @@ if (!isset($_SESSION["user"]) || $_SESSION["user"]["type_of_user"] == '0') {
     header("Location: index.php");
     exit;
 }
-
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 $stmt = $db->prepare('select * from products where user_id = :user_id');
 $stmt->execute([$_SESSION["user"]["user_id"]]);
 $list = $stmt->fetchAll();
