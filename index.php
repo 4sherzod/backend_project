@@ -15,8 +15,99 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Document</title>
-     <link rel="stylesheet" href="index.css">
+     <title>Online Store</title>
+     <style>
+          body {
+               background-color: #FFFDF6;
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+               margin: 0;
+               padding: 0;
+          }
+          header {
+               background-color: #1f4034;
+               color: #fff;
+               padding: 10px 20px;
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+          }
+          header h1 {
+               margin: 0;
+               color: #DC9D23;
+               font-size: 1.5em;
+          }
+          nav ul {
+               list-style-type: none;
+               padding: 0;
+               margin: 0;
+               display: flex;
+               padding-left: 20px;
+          }
+          nav ul li {
+               margin-right: 15px;
+          }
+          nav ul li a {
+               color: #fff;
+               text-decoration: none;
+               font-size: 1em;
+          }
+          #searchInput {
+               padding: 5px;
+               width: 300px;
+               height: 25px;
+               font-size: 1em;
+               margin-left: 15px;
+          }
+          .grid-container {
+               display: grid;
+               grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+               gap: 20px;
+               padding: 20px;
+          }
+          .item {
+               text-align: center;
+               display: flex;
+               flex-direction: column;
+               justify-content: space-between;
+               padding: 10px;
+               background-color: #fff;
+               box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+               position: relative;
+               
+          }
+          .item a {
+               text-decoration: none;
+               color: inherit;
+               margin-top: auto;
+          }
+          .item img {
+               max-width: 100%;
+               height: auto;
+               object-fit: cover;
+               border-radius: 2px;
+               margin-bottom: auto;
+          }
+          .item-details {
+               display: flex;
+               flex-direction: column;
+               justify-content: flex-end;
+               margin-top: auto;
+          }
+          .item p span {
+               background-color: #DC9D23;
+               color: white;
+               padding: 3px 6px;
+               border-radius: 4px;
+          }
+          .item p {
+               color: black;
+               margin: 0;
+          }
+          .menu a {
+               color: white;
+               text-decoration: none;
+          }
+     </style>
      <script>
           function clearPlaceholder(input) {
                input.placeholder = '';
@@ -29,48 +120,43 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
      </script>
 </head>
 <body>
-     <form method="GET" action="">
-          <header>
-               <?php
-                    if($logged){
-                    echo '<p>Welcome ', $_SESSION["user"]["first_name"], '<br><a href="logout.php">(Log out)</a></p>';
-                    echo "<div><a href='edit_profile.php'>edit_profile</a></div>";
-                    }
-                    else {
-                         echo '<p>Welcome <br> <a href="login.php">(Log in)</a></p>';
-                    }
-               ?>
+     <header>
+          <div style="display: flex; align-items: center;">
+               <h1>Bil<span>Grocer</span></h1>
+               <nav>
+                    <ul>
+                         <li><a href="index.php">Home</a></li>
+                         <li><a href="shoppingcart.php">Cart</a></li>
+                         <?php
+                              if($logged){
+                                   echo '<li><a href="logout.php">Log out</a></li>';
+                                   echo '<li><a href="edit_profile.php">Edit Profile</a></li>';
+                              } else {
+                                   echo '<li><a href="login.php">Log in</a></li>';
+                              }
+                         ?>
+                    </ul>
+               </nav>
+          </div>
+          <form method="GET" action="" style="display: flex; align-items: center;">
                <input type="text" id="searchInput" name="search" placeholder="Search..." onfocus="clearPlaceholder(this)" onblur="restorePlaceholder(this)" value="<?php echo htmlspecialchars($search); ?>">
-               <div id="menu">
-                    <a href="shoppingcart.php"><img src="" alt="Shopping Cart"></a>
-               </div>
-          </header>
-     </form>
-     <hr>
+          </form>
+     </header>
      <div class="grid-container">
-     <?php
-          if($logged) $products = getProducts($user["user_city"], $search);
-          else $products = getProducts(null, $search);
+          <?php
+               if($logged) $products = getProducts($user["user_city"], $search);
+               else $products = getProducts(null, $search);
 
-          foreach($products as $i) {
-               if(!$logged || $i["user_district"] == $user["user_city"]){
-                    echo '<div class="item"><a href="productdetail.php?id=', $i['product_id'], '">';
-                    echo '<img src="',$i['image_url'],'" alt="',$i['title'],'">
-                    <p><span>',$i['discounted_price'],' TL</span></p>
-                    <p>',$i['title'],'</p>';
-                    echo '</a></div>';
+               foreach($products as $i) {
+                    echo '<div class="item">';
+                    echo '<a href="productdetail.php?id=', $i['product_id'], '">';
+                    echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';
+                    echo '<div class="item-details">';
+                    echo '<p><span>', $i['discounted_price'], ' TL</span></p>';
+                    echo '<p>', $i['title'], '</p>';
+                    echo '</div></a></div>';
                }
-          }
-          foreach($products as $i) {
-               if($logged && $i["user_district"] != $user["user_city"]){
-                    echo '<div class="item"><a href="productdetail.php?id=', $i['product_id'], '">';
-                    echo '<img src="',$i['image_url'],'" alt="',$i['title'],'">
-                    <p><span>',$i['discounted_price'],' TL</span></p>
-                    <p>',$i['title'],'</p>';
-                    echo '</a></div>';
-               }
-          }
-     ?>
+          ?>
      </div>
 </body>
 </html>
