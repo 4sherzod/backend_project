@@ -55,8 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['quantity'])) {
 
 
 $quantity = 0;
-foreach ($_SESSION['cart'] as $item) {
-    if ($item['product_id'] == $id) {
+if ($item['product_id'] == $id) {
+        foreach ($_SESSION['cart'] as $item) {
         $quantity = $item['quantity'];
         break;
     }

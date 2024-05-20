@@ -49,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'email' => $email];
         $_SESSION['code'] = rand(100000, 999999);
         $_SESSION['new_user'] = $new_user;
+        $_SESSION['edit'] = 1;
         Mail::send($email, "Email Verification", "Please verify your email.");
         header('Location: confirm_code.php');
         exit();

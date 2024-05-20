@@ -37,12 +37,9 @@ function checkUser($email, $pass, &$user) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ( $user ) {
-         return password_verify1($pass, $user["user_password"]);
+         return password_verify($pass, $user["user_password"]);
     }
     return false ;
-}
-function password_verify1($s1, $s2) {
-    return $s1 == $s2;
 }
 
 function setTokenByEmail($email, $token) {

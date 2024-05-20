@@ -15,9 +15,13 @@
                
                // login as $user
                $_SESSION["user"] = $user;
-
-               header("Location: index.php") ;
-               exit;
+               
+               if ($user["type_of_user"] == '1') {
+                    header("Location: seller.php");
+                } else {
+                    header("Location: index.php");
+                }
+                exit;
           }
           else { 
                var_dump($user);

@@ -5,6 +5,9 @@
 
      $new_user = $_SESSION['new_user'];
      
+     if(isset($_SESSION['edit']))$edit = 1;
+     else $edit = 0;
+
      var_dump($new_user);
      if ( isset($_GET["resend"]) ) {
           $resend = $_GET["resend"];
@@ -17,12 +20,11 @@
      $receivedCode = isset($_SESSION['code']) ? $_SESSION['code'] : '';
      echo "<br>code is: ", $receivedCode;
 
-
      if ( !empty($_POST)) {
         extract($_POST) ;
         //var_dump($_POST);
         if ($code == $receivedCode) {
-          if(!empty($new_user['email'])){
+          if($edit){
                $stmt = $db->prepare('UPDATE users SET user_email = ? WHERE user_id = ?');
                $stmt->execute([$new_user['email'], $new_user['id']]);
                header("Location: index.php") ;
