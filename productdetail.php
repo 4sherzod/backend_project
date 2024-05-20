@@ -55,8 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['quantity'])) {
 
 
 $quantity = 0;
-if ($item['product_id'] == $id) {
-        foreach ($_SESSION['cart'] as $item) {
+foreach ($_SESSION['cart'] as $item) {
+    if ($item['product_id'] == $id) {
         $quantity = $item['quantity'];
         break;
     }
@@ -220,9 +220,9 @@ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         <button id="updateCart" class="button">Update Cart</button>
     </div>
 </main>
-<footer>
+ <footer>
     <p>&copy; 2024 Online Store. All rights reserved.</p>
-</footer>
+</footer> 
 
 <script type = "text/javascript">
   
