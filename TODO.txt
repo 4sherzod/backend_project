@@ -3,7 +3,6 @@
 10. Resend mail timer. -- sherzod // nar
 13. delete products -- irem
 14. When the market user logs in, it marks all expired products in the list. -- irem
-15. implement search bar -- sherzod
 16. make proper design for cart -- leyli // nar
 17. Session based cart --leyli
 18. Hashed password -- irem
