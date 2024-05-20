@@ -7,11 +7,11 @@ if (!isset($_SESSION["user"]) || $_SESSION["user"]["type_of_user"] == '0') {
     exit;
 }
 
-$stmt = $db->prepare('select * from products where user_id = ?');
+$stmt = $db->prepare('select * from products where user_id = :user_id');
 $stmt->execute([$_SESSION["user"]["user_id"]]);
 $list = $stmt->fetchAll();
 
-$stmt = $db->prepare("SELECT * FROM products WHERE user_id = ?");
+$stmt = $db->prepare("SELECT * FROM products WHERE user_id = :user_id");
 $stmt->execute([$_SESSION["user"]["user_id"]]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -113,7 +113,7 @@ function isDateBeforeToday($date) {
 </header>
     <h1 class="welcome">Welcome, <span> 
         <?php 
-            $marketname = $_SESSION['user']['market_name'];
+            $marketname = htmlspecialchars($_SESSION['user']['market_name'],ENT_QUOTES, 'UTF-8');
             echo $marketname; 
         ?>!</span></h1>
     <table>
@@ -136,19 +136,19 @@ function isDateBeforeToday($date) {
                         else{ echo "<tr>";}
                     ?>
                     
-                    <td><?php echo htmlspecialchars($row['title']); ?></td>
-                    <td><?php echo htmlspecialchars($row['stock']); ?></td>
-                    <td><?php echo htmlspecialchars($row['normal_price']); ?></td>
-                    <td><?php echo htmlspecialchars($row['discounted_price']); ?></td>
-                    <td><?php echo htmlspecialchars($row['expiration_date']);?></td>
+                    <td><?php echo htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($row['stock'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($row['normal_price'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($row['discounted_price'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($row['expiration_date'], ENT_QUOTES, 'UTF-8');?></td>
                     <?php 
                         if(isDateBeforeToday($row['expiration_date'])==true) {
                             echo "<td class='btncross'>";
                         }
                         else{ echo "<td class='action-links'>";}
-                        echo "<a href='edit_product.php?id=" . $row['product_id'] . "'>Edit</a>";
-                        echo "<a href='view.php?id=" . $row['product_id'] . "'>View</a>";
-                        echo "<a href='delete_product.php?id=" . $row['product_id'] . "' onclick=\"return confirm('Are you sure you want to delete this product?');\">Delete</a>";
+                        echo "<a href='edit_product.php?id=" . htmlspecialchars($row['product_id'], ENT_QUOTES, 'UTF-8') . "'>Edit</a>";
+                        echo "<a href='view.php?id=" . htmlspecialchars($row['product_id'], ENT_QUOTES, 'UTF-8') . "'>View</a>";
+                        echo "<a href='delete_product.php?id=" . htmlspecialchars($row['product_id'], ENT_QUOTES, 'UTF-8') . "' onclick=\"return confirm('Are you sure you want to delete this product?');\">Delete</a>";
                         ?>
                     </td>
                 </tr>
