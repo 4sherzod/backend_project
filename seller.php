@@ -6,15 +6,15 @@ if (!isset($_SESSION["user"]) || $_SESSION["user"]["type_of_user"] == '0') {
     header("Location: index.php");
     exit;
 }
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
+// if (empty($_SESSION['csrf_token'])) {
+//     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+// }
 $stmt = $db->prepare('select * from products where user_id = :user_id');
-$stmt->execute([$_SESSION["user"]["user_id"]]);
+$stmt->execute(['user_id' => $_SESSION["user"]["user_id"]]);
 $list = $stmt->fetchAll();
 
 $stmt = $db->prepare("SELECT * FROM products WHERE user_id = :user_id");
-$stmt->execute([$_SESSION["user"]["user_id"]]);
+$stmt->execute(['user_id' =>$_SESSION["user"]["user_id"]]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
