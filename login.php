@@ -19,7 +19,10 @@
                header("Location: index.php") ;
                exit;
           }
-          else { $fail = true  ; }
+          else { 
+               var_dump($user);
+               var_dump($password);
+               $fail = true  ; }
      }
 
      if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_COOKIE["access_token"])) {

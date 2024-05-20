@@ -1,5 +1,6 @@
 <?php
 require_once "db.php";
+require_once "mail.php";
 session_start();
 
 if (!isset($_SESSION['user'])) {
@@ -24,20 +25,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute([$fname, $lname, $marketname, $city, $district, $address, $userID]);
 
  
-    if ($user['user_email'] != $email) {
+    // if ($user['user_email'] != $email) {
        
+    //     // $stmt = $db->prepare('UPDATE users SET user_email = ? WHERE user_id = ?');
+    //     // $stmt->execute([$email, $userID]);
+       
+    //     $new_user = ['email' => $email];
+    //     $_SESSION['code'] = rand(100000, 999999);
+    //     $_SESSION['new_user'] = $new_user;
+    //     Mail::send($email, "TEST", "IDK SMTH");
+    //     header('Location: confirm_code.php');
+
+    //     $user = getUserById($userID);
+    //     $_SESSION['user'] = $user; 
+
+    //     exit();
+    if ($user['user_email'] != $email) {
         // $stmt = $db->prepare('UPDATE users SET user_email = ? WHERE user_id = ?');
         // $stmt->execute([$email, $userID]);
-       
-        $new_user = ['email' => $email];
+
+        $new_user = [
+            'id' => $userID,
+            'email' => $email];
         $_SESSION['code'] = rand(100000, 999999);
         $_SESSION['new_user'] = $new_user;
-        Mail::send($email, "TEST", "IDK SMTH");
+        Mail::send($email, "Email Verification", "Please verify your email.");
         header('Location: confirm_code.php');
-
-        $user = getUserById($userID);
-        $_SESSION['user'] = $user; 
-
         exit();
     } else {
        

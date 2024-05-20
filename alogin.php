@@ -3,25 +3,37 @@ session_start();
 $fail = false;
 require_once "db.php";
 
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 function checkUser($email, $password) {
     global $db;
-    $stmt = $db->prepare("SELECT * FROM users WHERE user_email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    try {
+        $stmt = $db->prepare("SELECT * FROM users WHERE user_email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['user_password'])) {
-        return $user;
+        if ($user && password_verify($password, $user['user_password'])) {
+            return $user;
+        }
+    } catch (Exception $e) {
+        error_log($e->getMessage(), 3, '/tmp/php_errors.log');
     }
     return false;
 }
 
 if (!empty($_POST)) {
-    extract($_POST);
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $remember = isset($_POST['remember']) ? $_POST['remember'] : null;
+
     $user = checkUser($email, $password);
     if ($user) {
-        if (isset($remember)) {
+        if ($remember) {
             $token = sha1(uniqid() . "Private Key is Here" . time());
-            setcookie("access_token", $token, time() + 60*60*24*365*10);
+            setcookie("access_token", $token, time() + 60*60*24*365*10, "/", "", false, true);
             setTokenByEmail($email, $token);
         }
 
@@ -58,14 +70,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_COOKIE["access_token"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isAuthenticated()) {
-    if ($_SESSION["user"]) {
-        if ($_SESSION["user"]["type_of_user"] != 'market') {
-            header("Location: index.php");
-        } else {
-            header("Location: seller.php");
-        }
-        exit;
+    if ($_SESSION["user"]["type_of_user"] == 'market') {
+        header("Location: seller.php");
+    } else {
+        header("Location: index.php");
     }
+    exit;
 }
 ?>
 

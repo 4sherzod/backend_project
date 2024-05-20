@@ -17,16 +17,32 @@ function markExpiredProducts() {
     $stmt->execute();
 }
 
-function checkUser($email, $password) {
+// function checkUser($email, $password, &$user) {
+//     global $db;
+//     $stmt = $db->prepare("SELECT * FROM users WHERE user_email = ?");
+//     $stmt->execute([$email]);
+//     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+//     if ($user && password_verify($password, $user['user_password'])) {
+//         return $user;
+//     }
+//     return false;
+// }
+
+function checkUser($email, $pass, &$user) {
     global $db;
-    $stmt = $db->prepare("SELECT * FROM users WHERE user_email = ?");
+
+    $stmt = $db->prepare("select * from users where user_email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['user_password'])) {
-        return $user;
+    if ( $user ) {
+         return password_verify1($pass, $user["user_password"]);
     }
-    return false;
+    return false ;
+}
+function password_verify1($s1, $s2) {
+    return $s1 == $s2;
 }
 
 function setTokenByEmail($email, $token) {

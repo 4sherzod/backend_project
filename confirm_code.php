@@ -22,11 +22,17 @@
         extract($_POST) ;
         //var_dump($_POST);
         if ($code == $receivedCode) {
+          if(!empty($new_user['email'])){
+               $stmt = $db->prepare('UPDATE users SET user_email = ? WHERE user_id = ?');
+               $stmt->execute([$new_user['email'], $new_user['id']]);
+               header("Location: index.php") ;
+          }
+          else{
                addUser($new_user);
-               
                unset($_SESSION["new_user"]);
                header("Location: login.php") ;
                exit;
+          }   
         }
         else {
           ?>
