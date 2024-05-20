@@ -92,17 +92,23 @@ function isDateBeforeToday($date) {
         .bighome{
             display: flex;
         }
+        .logo{
+            margin-left: 20px;
+            line-height: 50px;
+            color:white;
+        }
     </style>
 </head>
 <body>
 <header>
         <div class="bighome">
-            <h1>Bil<span>Grocer</span></h1>
+            <h1 class="logo">Bil<span>Grocer</span></h1>
                 <div class="home"><a href="index.php">Home</a></li>
                     <?php
                         echo "<div><a href='logout.php'>Log out</a></div>";
                         echo "<div><a href='edit_profile.php'>Edit Profile</a></div>";
                     ?>
+                    <div><a href='add_product.php'>Add Product</a></div>
         </div>
 </header>
     <h1 class="welcome">Welcome, <span> 
