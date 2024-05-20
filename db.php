@@ -1,7 +1,7 @@
 <?php
 const DSN = "mysql:host=localhost;dbname=UsersDB;charset=utf8mb4";
 const USER = "root";
-const DBPASSWORD = "";
+const DBPASSWORD = "GoogleChrome2003@";
 
 try {
     $db = new PDO(DSN, USER, DBPASSWORD);
@@ -32,8 +32,8 @@ function markExpiredProducts() {
 function checkUser($email, $pass, &$user) {
     global $db;
 
-    $stmt = $db->prepare("select * from users where user_email = ?");
-    $stmt->execute([$email]);
+    $stmt = $db->prepare("select * from users where user_email = :user_email");
+    $stmt->execute(['user_email'=>$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ( $user ) {
@@ -47,14 +47,14 @@ function password_verify1($pass1, $pass2) {
 
 function setTokenByEmail($email, $token) {
     global $db;
-    $stmt = $db->prepare("UPDATE users SET user_session_token = ? WHERE user_email = ?");
-    $stmt->execute([$token, $email]);
+    $stmt = $db->prepare("UPDATE users SET user_session_token = :user_session_token WHERE user_email = :user_email");
+    $stmt->execute(['user_session_token'=>$token, 'user_email'=>$email]);
 }
 
 function getUserByToken($token) {
     global $db;
-    $stmt = $db->prepare("SELECT * FROM users WHERE user_session_token = ?");
-    $stmt->execute([$token]);
+    $stmt = $db->prepare("SELECT * FROM users WHERE user_session_token = :user_session_token");
+    $stmt->execute(['user_session_token'=>$token]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
@@ -82,8 +82,8 @@ function getProducts($city, $search) {
 
 function getUserById($id) {
     global $db;
-    $stmt = $db->prepare("SELECT * FROM users WHERE user_id = ?");
-    $stmt->execute([$id]);
+    $stmt = $db->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt->execute(['user_id'=>$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
@@ -91,17 +91,17 @@ function addUser($user) {
     global $db;
     $stmt = $db->prepare("INSERT INTO users (
                           first_name, last_name, market_name, user_email, user_password, user_city, user_district, user_address, type_of_user
-                          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                          ) VALUES (:first_name, :last_name, :market_name, :user_email, :user_password, :user_city, :user_district, :user_address, :type_of_user)");
     $stmt->execute([
-        $user['fname'],
-        $user['lname'],
-        $user['marketname'],
-        $user['email'],
-        $user['password'],
-        $user['city'],
-        $user['district'],
-        $user['address'],
-        $user['type_of_user'],
+        'first_name'=>$user['fname'],
+        'last_name'=>$user['lname'],
+        'market_name'=>$user['marketname'],
+        'user_email'=>$user['email'],
+        'user_password'=>$user['password'],
+        'user_city'=>$user['city'],
+        'user_district'=>$user['district'],
+        'user_address'=>$user['address'],
+        'type_of_user'=>$user['type_of_user'],
     ]);
 }
 
@@ -109,16 +109,16 @@ function addProduct($product) {
     global $db;
     $stmt = $db->prepare("INSERT INTO products (
                           title, stock, normal_price, discounted_price, expiration_date, image_url, category, user_id
-                          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                          ) VALUES (:title, :stock, :normal_price, :discounted_price, :expiration_date, :image_url, :category, :user_id)");
     $stmt->execute([
-        $product['title'],
-        $product['stock'],
-        $product['normal_price'],
-        $product['discounted_price'],
-        $product['expiration_date'],
-        $product['image_url'],
-        $product['category'],
-        $product['user_id'],
+        'title'=>$product['title'],
+        'stock'=>$product['stock'],
+        'normal_price'=>$product['normal_price'],
+        'discounted_price'=>$product['discounted_price'],
+        'expiration_date'=>$product['expiration_date'],
+        'image_url'=>$product['image_url'],
+        'category'=>$product['category'],
+        'user_id'=>$product['user_id'],
     ]);
 }
 
