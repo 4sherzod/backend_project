@@ -1,14 +1,10 @@
 1. Proper design for "Failed to log in" --saida
 4. Clean the code and structure, make proper file system. --sherzod // nar 
 10. Resend mail timer. -- sherzod // nar
-13. delete products -- irem
-14. When the market user logs in, it marks all expired products in the list. -- irem
-16. make proper design for cart -- leyli // nar
-17. Session based cart --leyli
-18. Hashed password -- irem
+18. Hashed password -- sherzod
 19. offer sticky-form -- everyone 
 20. Applications must be protected against sql injection, XSS, and CSRF attacks -- irem 
 21. Make proper design -- everyone <------------------------------------------------------------------------- IMPORTANT
-22. Make proper names for files plz -- saida/leyli // nar
-24. Exceed stock amount -- leyli
 27. Add img for the product properly
+28. if no products, display that
+29. fix register.php

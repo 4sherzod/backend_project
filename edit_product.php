@@ -36,32 +36,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         *{
             border: 1px solid red;
         }
+        form,h1{
+            width: fit-content;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
     <h1>Edit Product</h1>
     <form method="POST" action="">
-        <label for="title">Product Title:</label>
-        <input type="text" class="input" name="title" id="title" placeholder="Product Title" value="<?php echo $product["title"];?>">
+        <div>
+            <label for="title">Product Title:</label>
+            <input type="text" class="input" name="title" id="title" placeholder="Product Title" value="<?php echo $product["title"];?>">
+        </div>
         <br>
-        <label for="stock">Stock:</label>
-        <input type="number" class="input" id="stock" name="stock" value="<?php echo htmlspecialchars($product['stock']); ?>" required>
+        <div>
+            <label for="stock">Stock:</label>
+            <input type="number" class="input" id="stock" name="stock" value="<?php echo htmlspecialchars($product['stock']); ?>" required>
+        </div>
+        <br>
+        <div>
+            <label for="normal_price">Normal Price:</label>
+            <input type="number" class="input" step="0.01" id="normal_price" name="normal_price" value="<?php echo htmlspecialchars($product['normal_price']); ?>" required>
+        </div>
+        <br>
+        <div>
+            <label for="discounted_price">Discounted Price:</label>
+            <input type="number" class="input" step="0.01" id="discounted_price" name="discounted_price" value="<?php echo htmlspecialchars($product['discounted_price']); ?>" required>
+        </div>
         <br>
 
-        <label for="normal_price">Normal Price:</label>
-        <input type="number" class="input" step="0.01" id="normal_price" name="normal_price" value="<?php echo htmlspecialchars($product['normal_price']); ?>" required>
+        <div>
+            <label for="expiration_date">Expiration Date:</label>
+            <input type="date" class="input" id="expiration_date" name="expiration_date" value="<?php echo htmlspecialchars($product['expiration_date']); ?>" required>
+        </div>
         <br>
 
-        <label for="discounted_price">Discounted Price:</label>
-        <input type="number" class="input" step="0.01" id="discounted_price" name="discounted_price" value="<?php echo htmlspecialchars($product['discounted_price']); ?>" required>
-        <br>
-
-        <label for="expiration_date">Expiration Date:</label>
-        <input type="date" class="input" id="expiration_date" name="expiration_date" value="<?php echo htmlspecialchars($product['expiration_date']); ?>" required>
-        <br>
-
-        <label for="category">Category:</label>
-        <input type="text" class="input" id="category" name="category" value="<?php echo htmlspecialchars($product['category']); ?>" required>
+        <div>
+            <label for="category">Category:</label>
+            <input type="text" class="input" id="category" name="category" value="<?php echo htmlspecialchars($product['category']); ?>" required>
+        </div>
         <br>
 
         <button type="submit" class="button">Save Changes</button>
