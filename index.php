@@ -6,6 +6,20 @@ asd(2);
 asd(3);
 asd(4);
 asd(5);
+function isDateBeforeToday($date) {
+    // Parse the input date
+    $inputDate = strtotime($date);
+    if ($inputDate === false) {
+        // Invalid date format
+        return false;
+    }
+
+    // Get today's date
+    $today = strtotime(date('Y-m-d'));
+
+    // Compare the dates
+    return $inputDate < $today;
+}
 asd(6);
 
 session_start();
@@ -199,7 +213,7 @@ $total_pages = ceil($total_products / $products_per_page);
     <?php
 //     var_dump()
     foreach ($products as $i) {
-          if(!$logged || $i["user_district"] == $user["user_district"]){
+          if((!$logged || $i["user_district"] == $user["user_district"]) && (!isDateBeforeToday($i["expiration_date"]))){
                echo '<div class="item">';
                echo '<a href="productdetail.php?id=', $i['product_id'], '">';
                echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';
@@ -210,7 +224,7 @@ $total_pages = ceil($total_products / $products_per_page);
           }
     }
     foreach($products as $i) {
-          if($logged && $i["user_district"] != $user["user_district"]){
+          if(($logged && $i["user_district"] != $user["user_district"]) && (!isDateBeforeToday($i["expiration_date"]))){
                echo '<div class="item">';
                echo '<a href="productdetail.php?id=', $i['product_id'], '">';
                echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';

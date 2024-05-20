@@ -64,7 +64,7 @@ function isAuthenticated() {
 function getProducts($city, $search, $offset = 0, $limit = 4) {
     global $db;
     if ($city != "") {
-        $stmt = $db->prepare("SELECT p.*, u.user_district
+        $stmt = $db->prepare("SELECT p.*, u.user_district, expiration_date
                               FROM products p
                               JOIN users u ON p.user_id = u.user_id
                               WHERE u.user_city = ? AND p.title LIKE ?
@@ -75,7 +75,7 @@ function getProducts($city, $search, $offset = 0, $limit = 4) {
         $stmt->bindValue(4, (int) $limit, PDO::PARAM_INT);
         $stmt->execute();
     } else {
-        $stmt = $db->prepare("SELECT p.*, u.user_district
+        $stmt = $db->prepare("SELECT p.*, u.user_district, expiration_date
                               FROM products p
                               JOIN users u ON p.user_id = u.user_id
                               WHERE p.title LIKE ?
