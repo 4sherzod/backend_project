@@ -73,7 +73,6 @@
      <h1 class="title"><span>Bil</span>Grocer</h1>
      <div id="logindiv" class="box">
           <form method="post">
-              //<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                <br>
                <input type="text" class="input" name="email" placeholder="E-MAIL" value="<?= isset($_POST['email'])? htmlspecialchars($_POST['email'], ENT_QUOTES):''?>"> 
                <input type="password" class="input" name="password" placeholder="PASSWORD" value="<?= isset($_POST['password'])? htmlspecialchars($_POST['password'], ENT_QUOTES):''?>"> 
