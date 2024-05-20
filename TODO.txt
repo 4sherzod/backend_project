@@ -6,4 +6,3 @@
 20. Applications must be protected against sql injection, XSS, and CSRF attacks -- irem 
 21. Make proper design -- everyone <------------------------------------------------------------------------- IMPORTANT
 27. Add img for the product properly
-29. fix register.php
