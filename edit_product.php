@@ -32,6 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <title>Edit Product</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        *{
+            border: 1px solid red;
+        }
+    </style>
 </head>
 <body>
     <h1>Edit Product</h1>

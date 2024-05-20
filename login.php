@@ -24,7 +24,7 @@
                 exit;
           }
           else { 
-               var_dump($user);
+               var_dump($qqq);
                var_dump($password);
                $fail = true  ; }
      }

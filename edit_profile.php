@@ -17,12 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lname = $_POST['lname'];
     $marketname = $_POST['marketname'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $city = $_POST['city'];
     $district = $_POST['district'];
     $address = $_POST['address'];
 
-    $stmt = $db->prepare('UPDATE users SET first_name = ?, last_name = ?, market_name = ?, user_city = ?, user_district = ?, user_address = ? WHERE user_id = ?');
-    $stmt->execute([$fname, $lname, $marketname, $city, $district, $address, $userID]);
+    $stmt = $db->prepare('UPDATE users SET first_name = ?, last_name = ?, market_name = ?,user_password = ?, user_city = ?, user_district = ?, user_address = ? WHERE user_id = ?');
+    $stmt->execute([$fname, $lname, $marketname, $password, $city, $district, $address, $userID]);
 
  
     // if ($user['user_email'] != $email) {
@@ -67,6 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lname = $user['last_name'];
     $marketname = $user['market_name'];
     $email = $user['user_email'];
+    $password = $user['user_password'];
     $city = $user['user_city'];
     $district = $user['user_district'];
     $address = $user['user_address'];
@@ -91,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" class="input" name="lname" id="lname" placeholder="Last Name" style="display: <?= $type_of_user == 0 ? 'block' : 'none'; ?>" value="<?= htmlspecialchars($lname); ?>">
             <input type="text" class="input" name="marketname" id="marketname" placeholder="Market Name" style="display: <?= $type_of_user == 0 ? 'none' : 'block'; ?>" value="<?= htmlspecialchars($marketname); ?>">
             <input type="text" class="input" name="email" id="email" placeholder="E-mail" value="<?= htmlspecialchars($email); ?>">
+            <input type="password" class="input" name="password" id="password" placeholder="Password" value="<?= htmlspecialchars($password); ?>">
             <div id="city">
                 <input type="text" class="input2" name="city" placeholder="City" value="<?= htmlspecialchars($city); ?>">
                 <input type="text" class="input2" name="district" placeholder="District" value="<?= htmlspecialchars($district); ?>">
