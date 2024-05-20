@@ -4,12 +4,12 @@ $fail = false;
 require_once "db.php";
 
 function checkUser($email, $password) {
-    global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    global $db;
+    $stmt = $db->prepare("SELECT * FROM users WHERE user_email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['password'])) {
+    if ($user && password_verify($password, $user['user_password'])) {
         return $user;
     }
     return false;
@@ -59,8 +59,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_COOKIE["access_token"])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isAuthenticated()) {
     if ($_SESSION["user"]) {
-        if (!$_SESSION["user"]["type_of_user"]) header("Location: index.php");
-        else header("Location: seller.php");
+        if ($_SESSION["user"]["type_of_user"] != 'market') {
+            header("Location: index.php");
+        } else {
+            header("Location: seller.php");
+        }
         exit;
     }
 }
@@ -94,8 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isAuthenticated()) {
     <div id="logindiv" class="box">
         <form method="post">
             <br>
-            <input type="text" class="input" name="email" placeholder="E-MAIL" value="<?= isset($_POST['email']) ? $_POST['email'] : '' ?>">
-            <input type="password" class="input" name="password" placeholder="PASSWORD" value="<?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
+            <input type="text" class="input" name="email" placeholder="E-MAIL" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email'], ENT_QUOTES) : '' ?>">
+            <input type="password" class="input" name="password" placeholder="PASSWORD" value="<?= isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES) : '' ?>">
             <div class="checkbox-container">
                 <div id="a">
                     <input type="checkbox" id="remember" name="remember" style="margin-right: 5px;">
