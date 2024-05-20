@@ -3,7 +3,7 @@ session_start();
 
 require_once("db.php");
 
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["user"]) || $_SESSION["user"]["type_of_user"] == '1') {
     header("Location: login.php");
     exit;
 }

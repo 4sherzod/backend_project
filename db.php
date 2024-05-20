@@ -1,7 +1,7 @@
 <?php
 const DSN = "mysql:host=localhost;dbname=UsersDB;charset=utf8mb4";
 const USER = "root";
-const DBPASSWORD = "GoogleChrome2003@";
+const DBPASSWORD = "";
 
 try {
     $db = new PDO(DSN, USER, DBPASSWORD);

@@ -54,7 +54,8 @@ $total_pages = ceil($total_products / $products_per_page);
             width: 100%;
         }
         header {
-            background-color: #1f4034;
+          background-color: #40674A;
+          height: 80px;
             color: #fff;
             padding: 10px 20px;
             display: flex;
@@ -63,8 +64,10 @@ $total_pages = ceil($total_products / $products_per_page);
         }
         header h1 {
             margin: 0;
-            color: #DC9D23;
-            font-size: 1.5em;
+            color: white;
+        }
+        span{
+          color: #DC9D23;
         }
         nav ul {
             list-style-type: none;
@@ -75,11 +78,13 @@ $total_pages = ceil($total_products / $products_per_page);
         }
         nav ul li {
             margin-right: 15px;
+            line-height: 80px;
         }
         nav ul li a {
             color: #fff;
             text-decoration: none;
             font-size: 1em;
+            line-height: 80px;
         }
         #searchInput {
             padding: 5px;
@@ -194,7 +199,7 @@ $total_pages = ceil($total_products / $products_per_page);
     <?php
 //     var_dump()
     foreach ($products as $i) {
-          if($i["user_district"] == $user["user_district"]){
+          if(!$logged || $i["user_district"] == $user["user_district"]){
                echo '<div class="item">';
                echo '<a href="productdetail.php?id=', $i['product_id'], '">';
                echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';
@@ -205,7 +210,7 @@ $total_pages = ceil($total_products / $products_per_page);
           }
     }
     foreach($products as $i) {
-          if($i["user_district"] != $user["user_district"]){
+          if($logged && $i["user_district"] != $user["user_district"]){
                echo '<div class="item">';
                echo '<a href="productdetail.php?id=', $i['product_id'], '">';
                echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';

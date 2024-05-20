@@ -2,7 +2,7 @@
 require_once("db.php");
 
 session_start();
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["user"]) || $_SESSION["user"]["type_of_user"] == '1') {
     header("Location: login.php");
     exit;
 }
@@ -80,7 +80,7 @@ foreach ($detailedCartItems as $item) {
     $totalPrice += $item['discounted_price'] * $item['quantity'];
 }
 
-var_dump($_SESSION["cart"]);
+// var_dump($_SESSION["cart"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +102,7 @@ body {
 header {
     color: #fff;
     padding: 20px;
-    background-color: #1f4034;
+    background-color: #40674A;
 }
 
 header h1 {
