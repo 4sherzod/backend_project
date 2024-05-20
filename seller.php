@@ -40,7 +40,7 @@ function isDateBeforeToday($date) {
     <title>Seller Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        h1{
+        .welcome{
             width: fit-content;
             margin: 50px auto;
             color: #40674A;
@@ -72,10 +72,40 @@ function isDateBeforeToday($date) {
         .btncross a:hover{
             background-color: gray;
         }
+        header{
+            background-color: #40674A;
+            margin: 0;
+            padding: 0;
+            height: 100px;
+        }
+        .home{
+            display: flex;
+            height: 100px;
+            line-height: 100px;
+            gap: 20px;
+            margin-left: 20px;
+        }
+        .home a {
+            text-decoration: none;
+            color: white;
+        }
+        .bighome{
+            display: flex;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome, <span> 
+<header>
+        <div class="bighome">
+            <h1>Bil<span>Grocer</span></h1>
+                <div class="home"><a href="index.php">Home</a></li>
+                    <?php
+                        echo "<div><a href='logout.php'>Log out</a></div>";
+                        echo "<div><a href='edit_profile.php'>Edit Profile</a></div>";
+                    ?>
+        </div>
+</header>
+    <h1 class="welcome">Welcome, <span> 
         <?php 
             $marketname = $_SESSION['user']['market_name'];
             echo $marketname; 
@@ -111,7 +141,7 @@ function isDateBeforeToday($date) {
                         }
                         else{ echo "<td class='action-links'>";}
                         echo "<a href='edit_product.php?id=" . $row['product_id'] . "'>Edit</a>";
-                        echo "<a href='productdetail.php?id=" . $row['product_id'] . "'>View</a>";
+                        echo "<a href='view.php?id=" . $row['product_id'] . "'>View</a>";
                         echo "<a href='delete_product.php?id=" . $row['product_id'] . "' onclick=\"return confirm('Are you sure you want to delete this product?');\">Delete</a>";
                         ?>
                     </td>

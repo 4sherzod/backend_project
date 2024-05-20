@@ -11,6 +11,7 @@ if (!isset($_SESSION['user'])) {
 $userID = $_SESSION['user']['user_id'];
 $user = getUserById($userID);
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $fname = $_POST['fname'];
@@ -25,22 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $db->prepare('UPDATE users SET first_name = ?, last_name = ?, market_name = ?,user_password = ?, user_city = ?, user_district = ?, user_address = ? WHERE user_id = ?');
     $stmt->execute([$fname, $lname, $marketname, $password, $city, $district, $address, $userID]);
 
- 
-    // if ($user['user_email'] != $email) {
-       
-    //     // $stmt = $db->prepare('UPDATE users SET user_email = ? WHERE user_id = ?');
-    //     // $stmt->execute([$email, $userID]);
-       
-    //     $new_user = ['email' => $email];
-    //     $_SESSION['code'] = rand(100000, 999999);
-    //     $_SESSION['new_user'] = $new_user;
-    //     Mail::send($email, "TEST", "IDK SMTH");
-    //     header('Location: confirm_code.php');
-
-    //     $user = getUserById($userID);
-    //     $_SESSION['user'] = $user; 
-
-    //     exit();
     if ($user['user_email'] != $email) {
         // $stmt = $db->prepare('UPDATE users SET user_email = ? WHERE user_id = ?');
         // $stmt->execute([$email, $userID]);
@@ -59,7 +44,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = getUserById($userID);
         $_SESSION['user'] = $user; 
 
-        header('Location: index.php');
+        $type_of_user = empty($user['market_name']) ? 0 : 1;
+
+        if($type_of_user == 0){
+            header('Location: index.php');
+        }
+        else {
+            header('Location: seller.php');
+        }
         exit();
     }
 }
@@ -72,8 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $city = $user['user_city'];
     $district = $user['user_district'];
     $address = $user['user_address'];
-
     $type_of_user = empty($marketname) ? 0 : 1;
+    
 ?>
 
 <!DOCTYPE html>

@@ -14,9 +14,15 @@
          extract($_POST);
          
          // Check for empty fields
-         if (empty($fname) || empty($lname)|| empty($email) || empty($password) || empty($city) || empty($district) || empty($address)) {
-             $error_message = "Please fill in all fields.";
-         } else {
+        if (($type_of_user == 0) && (empty($fname) || empty($lname)|| empty($email) || empty($password) || empty($city) || empty($district) || empty($address))){
+                $error_message = "Please fill in all fields.";
+        }
+         
+        else if(($type_of_user == 1) && (empty($marketname) || empty($email) || empty($password) || empty($city) || empty($district) || empty($address))){
+                $error_message = "Please fill in all fields.";
+        }
+         
+        else {
  
              // Process form submission
              if (($fname == "TEST" || $marketname == "TEST")) {

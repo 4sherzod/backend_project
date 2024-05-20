@@ -107,6 +107,11 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
                color: white;
                text-decoration: none;
           }
+
+          .empty{
+               width: fit-content;
+               margin: auto;
+          }
      </style>
      <script>
           function clearPlaceholder(input) {
@@ -146,15 +151,19 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
           <?php
                if($logged) $products = getProducts($user["user_city"], $search);
                else $products = getProducts(null, $search);
-
-               foreach($products as $i) {
-                    echo '<div class="item">';
-                    echo '<a href="productdetail.php?id=', $i['product_id'], '">';
-                    echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';
-                    echo '<div class="item-details">';
-                    echo '<p><span>', $i['discounted_price'], ' TL</span></p>';
-                    echo '<p>', $i['title'], '</p>';
-                    echo '</div></a></div>';
+               if($products==NULL){
+                    echo "<div class='empty'>There are no products in your city :(</div>";
+               }
+               else{
+                    foreach($products as $i) {
+                         echo '<div class="item">';
+                         echo '<a href="productdetail.php?id=', $i['product_id'], '">';
+                         echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';
+                         echo '<div class="item-details">';
+                         echo '<p><span>', $i['discounted_price'], ' TL</span></p>';
+                         echo '<p>', $i['title'], '</p>';
+                         echo '</div></a></div>';
+                    }
                }
           ?>
      </div>
