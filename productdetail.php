@@ -10,9 +10,24 @@ if (!isset($_SESSION["user"])) {
 
 $user_id = $_SESSION["user"];
 
+$stmt = $db->prepare("select count(*) from products");
+$stmt->execute();
+$cnt = $stmt->fetch(PDO::FETCH_ASSOC)["count(*)"];
+
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 }
+else {
+    header("Location: login.php");
+    exit;
+}
+
+if((int)$cnt < (int)$id) {
+    header("Location: login.php");
+    exit;
+}
+
+
 
 $stmt = $db->prepare("SELECT * FROM products WHERE product_id = ?");
 $stmt->execute([$id]);
@@ -45,13 +60,10 @@ foreach ($_SESSION['cart'] as $item) {
         $quantity = $item['quantity'];
         break;
     }
-
+}
 $stmt = $db->prepare("SELECT stock from products where product_id= ?");
 $stmt->execute([$id]);
 $stock = $stmt->fetch(PDO::FETCH_ASSOC)['stock'];
-
-
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -215,7 +227,7 @@ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 <script type = "text/javascript">
   
 document.getElementById('decreaseQuantity').addEventListener('click', function() {
-   console.log("yes");
+   console.log("yes1");
     var quantityElement = document.getElementById('quantity');
     var quantity = parseInt(quantityElement.textContent);
     if (quantity > 0) {
@@ -224,7 +236,7 @@ document.getElementById('decreaseQuantity').addEventListener('click', function()
 });
 
 document.getElementById('increaseQuantity').addEventListener('click', function() {
-    console.log("yes");
+    console.log("yes2");
     var quantityElement = document.getElementById('quantity');
     var quantity = parseInt(quantityElement.textContent);
     console.log(quantity);
@@ -233,6 +245,8 @@ document.getElementById('increaseQuantity').addEventListener('click', function()
         if (quantity < stock) {
             quantityElement.textContent = quantity + 1;
         }
+        else 
+        quantityElement.textContent = stock;
     <?php endif; ?>
 });
 
