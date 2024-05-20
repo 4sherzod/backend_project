@@ -6,9 +6,6 @@ $product_id = $_GET['id'];
 
 $product = getProductbyId($product_id);
 
-var_dump($product);
-echo $product["title"];
-
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve form data
@@ -20,8 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category = $_POST['category'];
 
     // Update product in the database
-    $stmt = $db->prepare("UPDATE products SET title = ?, stock = ?, normal_price = ?, discounted_price = ? , expiration_date = ?, category = ? where product_id = ?");
+    $stmt = $db->prepare("UPDATE products SET title = ?, stock = ?, normal_price = ?, discounted_price = ?, expiration_date = ?, category = ? WHERE product_id = ?");
     $stmt->execute([$title, $stock, $normal_price, $discounted_price, $expiration_date, $category, $product_id]);
+
+    // Redirect to seller.php after saving changes
+    header("Location: seller.php");
+    exit;
 }
 ?>
 

@@ -11,7 +11,7 @@ $stmt = $db->prepare('select * from products where user_id = ?');
 $stmt->execute([$_SESSION["user"]["user_id"]]);
 $list = $stmt->fetchAll();
 
-$stmt = $pdo->prepare("SELECT * FROM products WHERE user_id = ?");
+$stmt = $db->prepare("SELECT * FROM products WHERE user_id = ?");
 $stmt->execute([$_SESSION["user"]["user_id"]]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
