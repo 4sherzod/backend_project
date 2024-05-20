@@ -29,8 +29,8 @@ if((int)$cnt < (int)$id) {
 
 
 
-$stmt = $db->prepare("SELECT * FROM products WHERE product_id = ?");
-$stmt->execute([$id]);
+$stmt = $db->prepare("SELECT * FROM products WHERE product_id = :product_id");
+$stmt->execute(['product_id'=>$id]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!isset($_SESSION['cart'])) {
@@ -61,8 +61,8 @@ foreach ($_SESSION['cart'] as $item) {
         break;
     }
 }
-$stmt = $db->prepare("SELECT stock from products where product_id= ?");
-$stmt->execute([$id]);
+$stmt = $db->prepare("SELECT stock from products where product_id= :product_id");
+$stmt->execute(['product_id'=>$id]);
 $stock = $stmt->fetch(PDO::FETCH_ASSOC)['stock'];
 ?>
 <!DOCTYPE html>

@@ -2,7 +2,9 @@
      session_start();
      $fail = false;
      require_once "db.php" ;
-
+     if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
      if ( !empty($_POST)) {
           extract($_POST) ;
           if ( checkUser($email, $password, $user) ) {
