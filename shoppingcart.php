@@ -21,22 +21,47 @@ foreach ($_SESSION["cart"] as $cartItem) {
         $detailedCartItems[] = array_merge($cartItem, $product);
     }
 }
-
+if($_SERVER["REQUEST_METHOD"] == "POST"){
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['quantities'])) {
     foreach ($_POST['quantities'] as $product_id => $quantity) {
         if ($quantity > 0) {
             foreach ($_SESSION["cart"] as $key => $cartItem) {
                 if ($cartItem["product_id"] == $product_id) {
+                    $stmt = $db->prepare("SELECT stock from products where product_id= ?");
+                    $stmt->execute([$product_id]);
+                    $stock = (int)$stmt->fetch(PDO::FETCH_ASSOC)['stock'];
+                    if($quantity > $stock) $quantity = $stock;
                     $_SESSION["cart"][$key]["quantity"] = $quantity;
                 }
             }
         }
     }
 
+    if (isset($_POST['clear_cart'])) {
+        $_SESSION["cart"] = [];
+        header("Location: shoppingcart.php");
+        exit;
+    }
+    if (isset($_POST['buy_cart'])) {
+        foreach ($_SESSION["cart"] as $key => $cartItem) {
+            $quantity = $_SESSION["cart"][$key]["quantity"];
+            $stmt = $db->prepare("SELECT stock from products where product_id= ?");
+            $stmt->execute([$_SESSION["cart"][$key]["product_id"]]);
+            $stock = (int)$stmt->fetch(PDO::FETCH_ASSOC)['stock'];
+            $stock = $stock - $quantity;
+
+            $stmt = $db->prepare("UPDATE products set stock = ? where product_id= ?");
+            $stmt->execute([$stock, $_SESSION["cart"][$key]["product_id"]]);
+
+        } 
+        $_SESSION["cart"] = [];
+        header("Location: shoppingcart.php");
+        exit;
+    }
     header("Location: shoppingcart.php");
     exit;
 }
-
+}
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])){
     $id = $_GET['id'];
     foreach($_SESSION["cart"] as $key => $cartItem){
@@ -54,6 +79,8 @@ $totalPrice = 0;
 foreach ($detailedCartItems as $item) {
     $totalPrice += $item['discounted_price'] * $item['quantity'];
 }
+
+var_dump($_SESSION["cart"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -216,7 +243,12 @@ a{
             <div class="total">
                 Total: <?=$totalPrice?> TL
             </div>
+            
+            <button type="submit" name="clear_cart" style="background-color: orange; color: white; padding: 10px;border:white; margin-top: 20px;">Clear Cart</button>
+            <button type="submit" name="buy_cart" style="background-color: orange; color: white; padding: 10px;border:white; margin-top: 20px;">Buy Cart</button>
+            
         </form>
+        
     </div>
 </main>
 
