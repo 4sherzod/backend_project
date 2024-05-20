@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ];
 
     addProduct($new_product);
+    //echo "product added";
     header('Location: seller.php');
     exit;
 }
