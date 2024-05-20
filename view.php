@@ -22,10 +22,10 @@ else {
     exit;
 }
 
-if((int)$cnt < (int)$id) {
-    header("Location: login.php");
-    exit;
-}
+// if((int)$cnt < (int)$id) {
+//     header("Location: login.php");
+//     exit;
+// }
 
 
 

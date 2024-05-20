@@ -4,14 +4,32 @@ session_start();
 $user_id = $_SESSION["user"]["user_id"];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $upload_dir = 'uploads/';
+    // Define the upload directory relative to the current script's directory
+    $upload_dir = __DIR__ . '/images/';
     $upload_file = $upload_dir . basename($_FILES['filename']['name']);
     $image_url = '';
 
+    // Ensure the upload directory exists and is writable
+    if (!is_dir($upload_dir)) {
+        if (!mkdir($upload_dir, 0755, true)) {
+            die("Failed to create upload directory.");
+        }
+    }
+
+    if (!is_writable($upload_dir)) {
+        die("Upload directory is not writable.");
+    }
+
+    // Check for upload errors
+    if ($_FILES['filename']['error'] !== UPLOAD_ERR_OK) {
+        die("File upload error: " . $_FILES['filename']['error']);
+    }
+
+    // Move the uploaded file
     if (move_uploaded_file($_FILES['filename']['tmp_name'], $upload_file)) {
-        $image_url = $upload_file;
+        $image_url = 'images/' . basename($_FILES['filename']['name']);
     } else {
-        echo "Failed to upload image.";
+        die("Failed to upload image. Check the folder permissions and try again.");
     }
 
     $new_product = [
@@ -26,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ];
 
     addProduct($new_product);
-    //echo "product added";
     header('Location: seller.php');
     exit;
 }

@@ -8,6 +8,7 @@ if (isset($_SESSION["user"])) {
     $user = $_SESSION["user"];
 }
 
+
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Pagination logic
