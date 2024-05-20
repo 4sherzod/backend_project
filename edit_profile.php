@@ -26,13 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  
     if ($user['user_email'] != $email) {
        
-        $stmt = $db->prepare('UPDATE users SET user_email = ? WHERE user_id = ?');
-        $stmt->execute([$email, $userID]);
+        // $stmt = $db->prepare('UPDATE users SET user_email = ? WHERE user_id = ?');
+        // $stmt->execute([$email, $userID]);
        
+        $new_user = ['email' => $email];
+        $_SESSION['code'] = rand(100000, 999999);
+        $_SESSION['new_user'] = $new_user;
+        Mail::send($email, "TEST", "IDK SMTH");
+        header('Location: confirm_code.php');
+
         $user = getUserById($userID);
         $_SESSION['user'] = $user; 
 
-        header('Location: confirm_code.php');
         exit();
     } else {
        
