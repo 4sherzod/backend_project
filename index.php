@@ -1,6 +1,14 @@
 <?php
-session_start();
+
 require_once "db.php";
+asd(1);
+asd(2);
+asd(3);
+asd(4);
+asd(5);
+asd(6);
+
+session_start();
 
 $logged = false;
 if (isset($_SESSION["user"])) {
@@ -16,11 +24,19 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($current_page - 1) * $products_per_page;
 
 // Fetch total number of products
-$total_products = countProducts($search);
-$total_pages = ceil($total_products / $products_per_page);
 
 // Fetch products for the current page
-$products = getProducts1($search, $offset, $products_per_page);
+if($logged){
+     $products = getProducts("Ankara", $search, $offset, $products_per_page);
+     $total_products = getTotal("Ankara",$search);
+}
+else {
+     $products = getProducts("", $search, $offset, $products_per_page);
+     $total_products = getTotal("",$search);
+}
+
+$total_pages = ceil($total_products / $products_per_page);
+
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +51,7 @@ $products = getProducts1($search, $offset, $products_per_page);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            width: 100%;
         }
         header {
             background-color: #1f4034;
@@ -72,6 +89,8 @@ $products = getProducts1($search, $offset, $products_per_page);
             margin-left: 15px;
         }
         .grid-container {
+          width: 80%;
+          margin: auto;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
@@ -173,15 +192,29 @@ $products = getProducts1($search, $offset, $products_per_page);
 </header>
 <div class="grid-container">
     <?php
+//     var_dump()
     foreach ($products as $i) {
-        echo '<div class="item">';
-        echo '<a href="productdetail.php?id=', $i['product_id'], '">';
-        echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';
-        echo '<div class="item-details">';
-        echo '<p><span>', $i['discounted_price'], ' TL</span></p>';
-        echo '<p>', $i['title'], '</p>';
-        echo '</div></a></div>';
+          if($i["user_district"] == $user["user_district"]){
+               echo '<div class="item">';
+               echo '<a href="productdetail.php?id=', $i['product_id'], '">';
+               echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';
+               echo '<div class="item-details">';
+               echo '<p><span>', $i['discounted_price'], ' TL</span></p>';
+               echo '<p>', $i['title'], '</p>';
+               echo '</div></a></div>';
+          }
     }
+    foreach($products as $i) {
+          if($i["user_district"] != $user["user_district"]){
+               echo '<div class="item">';
+               echo '<a href="productdetail.php?id=', $i['product_id'], '">';
+               echo '<img src="', $i['image_url'], '" alt="', $i['title'], '">';
+               echo '<div class="item-details">';
+               echo '<p><span>', $i['discounted_price'], ' TL</span></p>';
+               echo '<p>', $i['title'], '</p>';
+               echo '</div></a></div>';
+          }
+     }
     ?>
 </div>
 <div class="pagination">
@@ -222,19 +255,5 @@ function countProducts($search = '') {
     
     $stmt->execute();
     return $stmt->fetchColumn();
-}
-
-// Function to fetch products with pagination
-function getProducts1($search = '', $offset = 0, $limit = 4) {
-    $pdo = dbConnect();
-    $sql = "SELECT * FROM products WHERE title LIKE :search LIMIT :offset, :limit";
-    
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':search', '%' . $search . '%');
-    $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
-    $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
-    
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>

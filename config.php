@@ -2,8 +2,8 @@
 
 
 // PUT ur school mail and password for this to work
-const EMAIL = '' ;
+const EMAIL = 'sherzod.sobirov@ug.bilkent.edu.tr' ;
 
-const PASSWORD = '' ;
+const PASSWORD = 'yCCYLA67' ;
 
-const FULLNAME = "" ;
+const FULLNAME = "Sherzod Sobirov" ;

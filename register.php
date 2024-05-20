@@ -25,7 +25,7 @@
         else {
  
              // Process form submission
-             if (($fname == "TEST" || $marketname == "TEST")) {
+             if (1 || ($fname == "TEST" || $marketname == "TEST")) {
                  // Hash the password
                  $hashed_password = password_hash($password, PASSWORD_BCRYPT);
  
@@ -42,7 +42,7 @@
                  ];
                  $_SESSION['code'] = rand(100000, 999999);
                  $_SESSION['new_user'] = $new_user;
-                 Mail::send($email, "TEST", "IDK SMTH");
+                 Mail::send($email, "TEST", $_SESSION["code"]);
                  header("Location: confirm_code.php");
                  exit;
              } else {

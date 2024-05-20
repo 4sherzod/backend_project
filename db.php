@@ -37,7 +37,7 @@ function checkUser($email, $pass, &$user) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ( $user ) {
-         return password_verify1($pass, $user["user_password"]);
+         return password_verify($pass, $user["user_password"]);
     }
     return false ;
 }
@@ -61,24 +61,34 @@ function getUserByToken($token) {
 function isAuthenticated() {
     return isset($_SESSION["user"]);
 }
-
-function getProducts($city, $search) {
+function getProducts($city, $search, $offset = 0, $limit = 4) {
     global $db;
-    if (isset($city)) {
+    if ($city != "") {
         $stmt = $db->prepare("SELECT p.*, u.user_district
                               FROM products p
                               JOIN users u ON p.user_id = u.user_id
-                              WHERE u.user_city = ? AND p.title LIKE ?");
-        $stmt->execute([$city, "%$search%"]);
+                              WHERE u.user_city = ? AND p.title LIKE ?
+                              LIMIT ?, ?");
+        $stmt->bindValue(1, $city);
+        $stmt->bindValue(2, "%$search%");
+        $stmt->bindValue(3, (int) $offset, PDO::PARAM_INT);
+        $stmt->bindValue(4, (int) $limit, PDO::PARAM_INT);
+        $stmt->execute();
     } else {
         $stmt = $db->prepare("SELECT p.*, u.user_district
                               FROM products p
                               JOIN users u ON p.user_id = u.user_id
-                              WHERE p.title LIKE ?");
-        $stmt->execute(["%$search%"]);
+                              WHERE p.title LIKE ?
+                              LIMIT ?, ?");
+        $stmt->bindValue(1, "%$search%");
+        $stmt->bindValue(2, (int) $offset, PDO::PARAM_INT);
+        $stmt->bindValue(3, (int) $limit, PDO::PARAM_INT);
+        $stmt->execute();
     }
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
 
 function getUserById($id) {
     global $db;
@@ -127,4 +137,34 @@ function getProductById($product_id) {
     $stmt = $db->prepare("SELECT * FROM products WHERE product_id = ?");
     $stmt->execute([$product_id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function asd($id) {
+    global $db;
+    $hashed_password = password_hash("123", PASSWORD_BCRYPT);
+    $stmt = $db->prepare('UPDATE users SET user_password = ? WHERE user_id = ?');
+    $stmt->execute([$hashed_password, $id]);
+    // if () {
+    //    // echo "User registered successfully.";
+    // } else {
+    //     //echo "Failed to register user.";
+    // }
+}
+function getTotal($city, $search) {
+    global $db;
+    if($city != "") { 
+        $stmt = $db->prepare("SELECT COUNT(*) as total
+                              FROM products p
+                              JOIN users u ON p.user_id = u.user_id
+                              WHERE u.user_city = ? AND p.title LIKE ?");
+        $stmt->execute([$city, "%$search%"]);
+    } else {
+        $stmt = $db->prepare("SELECT COUNT(*) as total
+                              FROM products p
+                              JOIN users u ON p.user_id = u.user_id
+                              WHERE p.title LIKE ?");
+        $stmt->execute(["%$search%"]);
+    }
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'];
 }

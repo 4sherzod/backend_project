@@ -19,6 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $marketname = $_POST['marketname'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    var_dump($password);
+    $password = password_hash($password, PASSWORD_BCRYPT);
+    var_dump($hashed_password);
     $city = $_POST['city'];
     $district = $_POST['district'];
     $address = $_POST['address'];
@@ -36,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['code'] = rand(100000, 999999);
         $_SESSION['new_user'] = $new_user;
         $_SESSION['edit'] = 1;
-        Mail::send($email, "Email Verification", "Please verify your email.");
+        Mail::send($email, "Email Verification", "Please verify your email. Your code is: " .  $_SESSION['code']);
         header('Location: confirm_code.php');
         exit();
     } else {
@@ -85,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" class="input" name="lname" id="lname" placeholder="Last Name" style="display: <?= $type_of_user == 0 ? 'block' : 'none'; ?>" value="<?= htmlspecialchars($lname); ?>">
             <input type="text" class="input" name="marketname" id="marketname" placeholder="Market Name" style="display: <?= $type_of_user == 0 ? 'none' : 'block'; ?>" value="<?= htmlspecialchars($marketname); ?>">
             <input type="text" class="input" name="email" id="email" placeholder="E-mail" value="<?= htmlspecialchars($email); ?>">
-            <input type="password" class="input" name="password" id="password" placeholder="Password" value="<?= htmlspecialchars($password); ?>">
+            <input type="password" class="input" name="password" id="password" placeholder="Password" value="">
             <div id="city">
                 <input type="text" class="input2" name="city" placeholder="City" value="<?= htmlspecialchars($city); ?>">
                 <input type="text" class="input2" name="district" placeholder="District" value="<?= htmlspecialchars($district); ?>">
